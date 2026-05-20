@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$ html-anything --v2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+
+  @keyframes hcBlink {
+    50% { opacity: 0; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --hc-bg:    #0a0c10;
+    --hc-green: #7ed3a4;
+    --hc-cyan:  #64dfdf;
+    --hc-amber: #e9c58a;
+    --hc-rose:  #d4a0b9;
+    --hc-red:   #ff6b6b;
+    --hc-ink:   #e4e2d8;
+    --hc-ink2:  #8a8892;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--hc-bg);
+    color: var(--hc-ink);
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── overlay: grid ── */
+  .layer-grid {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(126,211,164,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(126,211,164,0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  /* ── overlay: vignette ── */
+  .layer-vignette {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 1;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.72) 100%);
+  }
+
+  /* ── overlay: scanlines ── */
+  .layer-scanlines {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 2;
+    background: repeating-linear-gradient(
+      transparent 0, transparent 2px,
+      rgba(126,211,164,0.04) 2px, rgba(126,211,164,0.04) 4px
+    );
+    mix-blend-mode: screen;
+  }
+
+  /* ── main content ── */
+  main {
+    position: relative;
+    z-index: 3;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 48px 140px;
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  /* ── macOS chrome ── */
+  .macos-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--hc-ink2);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 52px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(126,211,164,0.08);
+  }
+  .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-red    { background: #ff5f57; }
+  .dot-yellow { background: #febc2e; }
+  .dot-green  { background: #7ed3a4; }
+  .macos-path { margin-left: 14px; }
+
+  /* ── prompt lines ── */
+  .prompt {
+    font-size: 13px;
+    color: var(--hc-green);
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+  }
+  .prompt::before {
+    content: "$ ";
+    color: var(--hc-cyan);
+  }
+
+  /* ── headline ── */
+  h1 {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: clamp(48px, 7vw, 72px);
+    font-weight: 700;
+    color: var(--hc-green);
+    text-shadow: 0 0 30px rgba(126,211,164,0.35);
+    line-height: 0.95;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  h1 .version {
+    font-size: clamp(20px, 3vw, 28px);
+    color: var(--hc-cyan);
+    text-shadow: 0 0 20px rgba(100,223,223,0.3);
+    display: block;
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+  .cursor {
+    display: inline-block;
+    width: 14px;
+    height: 0.82em;
+    background: var(--hc-green);
+    margin-left: 8px;
+    vertical-align: middle;
+    animation: hcBlink 1s steps(2) infinite;
+  }
+
+  /* ── lede ── */
+  .lede {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--hc-ink);
+    max-width: 680px;
+    margin: 28px 0 52px;
+    opacity: 0.88;
+  }
+  .lede strong {
+    color: var(--hc-green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+  }
+
+  /* ── section headers ── */
+  .section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--hc-cyan);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(126,211,164,0.12);
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--hc-green);
+    text-shadow: 0 0 18px rgba(126,211,164,0.2);
+    margin: 56px 0 20px;
+    letter-spacing: -0.01em;
+  }
+  h2::before {
+    content: "## ";
+    color: var(--hc-cyan);
+    font-size: 16px;
+  }
+
+  /* ── cards grid ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    border: 1px solid rgba(126,211,164,0.14);
+    padding: 22px 24px;
+    background: rgba(126,211,164,0.03);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .card:hover {
+    border-color: rgba(126,211,164,0.32);
+    background: rgba(126,211,164,0.06);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--hc-green);
+    opacity: 0.5;
+  }
+  .card.amber::before { background: var(--hc-amber); }
+  .card.red::before   { background: var(--hc-red); }
+  .card.cyan::before  { background: var(--hc-cyan); }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--hc-green);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .card.amber .card-title { color: var(--hc-amber); }
+  .card.red   .card-title { color: var(--hc-red); }
+  .card.cyan  .card-title { color: var(--hc-cyan); }
+
+  .card-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--hc-ink2);
+    line-height: 1.6;
+  }
+  .card-body strong {
+    color: var(--hc-ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  /* ── steps list ── */
+  .steps {
+    list-style: none;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(126,211,164,0.07);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--hc-ink2);
+    line-height: 1.55;
+  }
+  .steps li:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--hc-cyan);
+    background: rgba(100,223,223,0.08);
+    border: 1px solid rgba(100,223,223,0.2);
+    padding: 4px 9px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    letter-spacing: 0.06em;
+  }
+  .steps li strong {
+    color: var(--hc-ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  /* ── tags ── */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 12px;
+    border: 1px solid rgba(126,211,164,0.25);
+    color: var(--hc-green);
+    background: rgba(126,211,164,0.05);
+    cursor: default;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .tag:hover {
+    background: rgba(126,211,164,0.1);
+    border-color: rgba(126,211,164,0.5);
+  }
+  .tag.amber {
+    border-color: rgba(233,197,138,0.25);
+    color: var(--hc-amber);
+    background: rgba(233,197,138,0.05);
+  }
+  .tag.amber:hover {
+    background: rgba(233,197,138,0.1);
+    border-color: rgba(233,197,138,0.5);
+  }
+  .tag.red {
+    border-color: rgba(255,107,107,0.25);
+    color: var(--hc-red);
+    background: rgba(255,107,107,0.05);
+  }
+  .tag.red:hover {
+    background: rgba(255,107,107,0.1);
+    border-color: rgba(255,107,107,0.5);
+  }
+
+  /* ── SVG chart area ── */
+  .chart-wrap {
+    margin: 8px 0 40px;
+    border: 1px solid rgba(126,211,164,0.1);
+    padding: 24px;
+    background: rgba(126,211,164,0.02);
+    overflow: hidden;
+  }
+  .chart-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--hc-ink2);
+    margin-bottom: 12px;
+  }
+
+  /* ── stat row ── */
+  .stat-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .stat {
+    flex: 1;
+    min-width: 160px;
+    border: 1px solid rgba(126,211,164,0.12);
+    padding: 20px 22px;
+    background: rgba(126,211,164,0.02);
+  }
+  .stat-value {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--hc-green);
+    text-shadow: 0 0 20px rgba(126,211,164,0.3);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-value.amber { color: var(--hc-amber); text-shadow: 0 0 20px rgba(233,197,138,0.3); }
+  .stat-value.cyan  { color: var(--hc-cyan);  text-shadow: 0 0 20px rgba(100,223,223,0.3); }
+  .stat-desc {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--hc-ink2);
+  }
+
+  /* ── cta block ── */
+  .cta-block {
+    border: 1px solid rgba(126,211,164,0.22);
+    padding: 32px 36px;
+    background: rgba(126,211,164,0.04);
+    margin-top: 48px;
+    position: relative;
+  }
+  .cta-block::before {
+    content: '> access terminal';
+    position: absolute;
+    top: -10px; left: 20px;
+    background: var(--hc-bg);
+    padding: 0 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--hc-cyan);
+  }
+  .cta-title {
+    font-size: 18px;
+    color: var(--hc-green);
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-shadow: 0 0 16px rgba(126,211,164,0.25);
+  }
+  .cta-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--hc-ink2);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .cta-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 10px 22px;
+    text-decoration: none;
+    border: 1px solid rgba(126,211,164,0.4);
+    color: var(--hc-green);
+    background: rgba(126,211,164,0.08);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn:hover {
+    background: rgba(126,211,164,0.16);
+    border-color: var(--hc-green);
+  }
+  .btn.secondary {
+    background: transparent;
+    border-color: rgba(126,211,164,0.15);
+    color: var(--hc-ink2);
+  }
+  .btn.secondary:hover {
+    border-color: rgba(126,211,164,0.35);
+    color: var(--hc-ink);
+  }
+
+  /* ── footer ── */
+  footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 14px 48px;
+    background: rgba(10,12,16,0.92);
+    border-top: 1px solid rgba(126,211,164,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--hc-ink2);
+    backdrop-filter: blur(8px);
+  }
+  footer span { color: var(--hc-cyan); }
+  .footer-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .footer-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(126,211,164,0.25);
+  }
+  .footer-dot.active {
+    background: var(--hc-green);
+    box-shadow: 0 0 6px rgba(126,211,164,0.5);
+  }
+
+  /* ── divider ── */
+  .divider {
+    height: 1px;
+    background: rgba(126,211,164,0.07);
+    margin: 48px 0;
+  }
+
+  /* ── inline code ── */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(100,223,223,0.08);
+    border: 1px solid rgba(100,223,223,0.15);
+    color: var(--hc-cyan);
+    padding: 2px 7px;
+  }
+</style>
+</head>
+<body>
+
+<!-- overlay layers -->
+<div class="layer-grid"></div>
+<div class="layer-vignette"></div>
+<div class="layer-scanlines"></div>
+
+<main>
+
+  <!-- macOS chrome -->
+  <div class="macos-bar">
+    <span class="dot dot-red"></span>
+    <span class="dot dot-yellow"></span>
+    <span class="dot dot-green"></span>
+    <span class="macos-path">~/html-anything · zsh · 132x48 · v2.0.0</span>
+  </div>
+
+  <!-- hero prompt + headline -->
+  <p class="prompt">html-anything --version 2 --describe</p>
+  <h1>
+    HTML-ANYTHING
+    <span class="version">v2 / MARKDOWN TO BEAUTIFUL HTML<span class="cursor"></span></span>
+  </h1>
+
+  <p class="lede">
+    Your rough notes deserve better than plain text.
+    <strong>HTML-Anything v2</strong> turns any markdown snippet, half-formed idea,
+    or messy outline into a polished, professionally designed HTML page — in under
+    <strong>30 seconds</strong>, with zero fiddling.
+  </p>
+
+  <!-- stats -->
+  <div class="section-label">// at a glance</div>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-value">15</div>
+      <div class="stat-desc">Design Styles</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value amber">&lt;30s</div>
+      <div class="stat-desc">Render Time</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value cyan">0</div>
+      <div class="stat-desc">Sign-ups Required</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">Free</div>
+      <div class="stat-desc">Pilot Access</div>
+    </div>
+  </div>
+
+  <!-- chart -->
+  <div class="section-label">// render pipeline</div>
+  <div class="chart-wrap">
+    <div class="chart-label">Input entropy → structured output — signal gain per stage</div>
+    <svg width="100%" height="90" viewBox="0 0 800 90" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- area fill -->
+      <path d="M0 70 C80 68,150 62,220 50 C290 38,340 28,400 22 C460 16,520 14,580 12 C640 10,700 10,800 8 L800 90 L0 90 Z"
+            fill="rgba(126,211,164,0.07)" stroke="none"/>
+      <!-- stroke line -->
+      <path d="M0 70 C80 68,150 62,220 50 C290 38,340 28,400 22 C460 16,520 14,580 12 C640 10,700 10,800 8"
+            stroke="#7ed3a4" stroke-width="1.5" fill="none"/>
+      <!-- stage markers -->
+      <circle cx="0"   cy="70" r="3" fill="#7ed3a4" stroke="#7ed3a4" stroke-width="1"/>
+      <circle cx="200" cy="52" r="3" fill="#7ed3a4" stroke="#7ed3a4" stroke-width="1"/>
+      <circle cx="400" cy="22" r="3" fill="#64dfdf" stroke="#64dfdf" stroke-width="1"/>
+      <circle cx="600" cy="12" r="3" fill="#e9c58a" stroke="#e9c58a" stroke-width="1"/>
+      <circle cx="800" cy="8"  r="3" fill="#7ed3a4" stroke="#7ed3a4" stroke-width="1"/>
+      <!-- x-axis labels -->
+      <text x="0"   y="88" fill="#8a8892" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="start">PASTE</text>
+      <text x="182" y="88" fill="#8a8892" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">OPTIMIZER</text>
+      <text x="400" y="88" fill="#64dfdf" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">CLAUDE 4.6</text>
+      <text x="600" y="88" fill="#e9c58a" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">RENDER</text>
+      <text x="800" y="88" fill="#8a8892" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="end">PUBLISH</text>
+    </svg>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- what's new -->
+  <p class="prompt">html-anything --changelog --v2</p>
+  <h2>What's New in v2</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">15 Design Styles</div>
+      <div class="card-body">From minimalist docs to vibrant marketing pages, technical specs to event posters — hand-crafted for every use case.</div>
+    </div>
+    <div class="card cyan">
+      <div class="card-title">Smart Prompt-Optimizer</div>
+      <div class="card-body">Automatically structures vague or incomplete input into <strong>logical sections</strong> and hierarchy before rendering.</div>
+    </div>
+    <div class="card amber">
+      <div class="card-title">Claude Sonnet 4.6</div>
+      <div class="card-body">Understands context, infers intent, fills gaps — without <strong>inventing facts</strong> or hallucinating content.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">One-Click Share</div>
+      <div class="card-body">Instant, no-login URLs. Send to stakeholders the moment the page renders. Zero setup required.</div>
+    </div>
+    <div class="card red">
+      <div class="card-title">Sub-30s Rendering</div>
+      <div class="card-body">From paste to publish in under <strong>30 seconds</strong>. No queue. No spinner doom. Just fast.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Free During Pilot</div>
+      <div class="card-body">Full access for product, design, and marketing teams. No credit card. No commitment. No catch.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- how it works -->
+  <p class="prompt">html-anything --explain --how-it-works</p>
+  <h2>How It Works</h2>
+
+  <ol class="steps">
+    <li>
+      <span class="step-num">01</span>
+      <div><strong>Paste or type</strong> — drop in your rough notes, bullet points, or a half-baked idea. No markdown syntax required. Plain English works perfectly.</div>
+    </li>
+    <li>
+      <span class="step-num">02</span>
+      <div><strong>Pick a style</strong> — choose from 15 hand-crafted designs, or let the tool suggest one based on your content type and intent.</div>
+    </li>
+    <li>
+      <span class="step-num">03</span>
+      <div><strong>Hit generate</strong> — the prompt-optimizer structures your input, Claude renders it, and you get back clean, semantic HTML in seconds.</div>
+    </li>
+    <li>
+      <span class="step-num">04</span>
+      <div><strong>Share instantly</strong> — one-click link, no setup required. Your page is live and shareable the moment it renders.</div>
+    </li>
+  </ol>
+
+  <div class="divider"></div>
+
+  <!-- who it's for -->
+  <p class="prompt">html-anything --list-audiences</p>
+  <h2>Who It's For</h2>
+
+  <div class="card-grid">
+    <div class="card cyan">
+      <div class="card-title">Product Teams</div>
+      <div class="card-body">Turn roadmap notes into <strong>shareable specs</strong> in seconds. Stop copy-pasting into Notion and just share a link.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Design Teams</div>
+      <div class="card-body">Rapid mockups, style guides, and <strong>design system docs</strong>. Looks polished before you even open Figma.</div>
+    </div>
+    <div class="card amber">
+      <div class="card-title">Marketing Teams</div>
+      <div class="card-body">Launch announcements, case studies, <strong>event pages</strong>, and landing pages. Ship before the brief is even approved.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Anyone With Ideas</div>
+      <div class="card-body">If you can describe it, HTML-Anything can render it. No design skills. No engineering. Just describe it.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- the 15 styles -->
+  <p class="prompt">html-anything --list-styles</p>
+  <h2>The 15 Styles</h2>
+
+  <div class="tag-row">
+    <span class="tag">Clean Doc</span>
+    <span class="tag amber">Bold Marketing</span>
+    <span class="tag">Minimal Deck</span>
+    <span class="tag red">Dark Tech</span>
+    <span class="tag">Warm Essay</span>
+    <span class="tag amber">Startup Pitch</span>
+    <span class="tag">Event Poster</span>
+    <span class="tag">Case Study</span>
+    <span class="tag red">Changelog</span>
+    <span class="tag">FAQ</span>
+    <span class="tag amber">Data Report</span>
+    <span class="tag">Product Brief</span>
+    <span class="tag red">Manifesto</span>
+    <span class="tag">Timeline</span>
+    <span class="tag amber">Gallery</span>
+  </div>
+
+  <p style="font-family:'Inter',sans-serif;font-size:14px;color:var(--hc-ink2);margin-bottom:40px;line-height:1.7;">
+    Each style is a complete design system — typography, spacing, color, and layout — tuned for
+    its specific use case. <code>--style=auto</code> lets Claude pick based on your content.
+  </p>
+
+  <div class="divider"></div>
+
+  <!-- CTA -->
+  <p class="prompt">html-anything --access --pilot</p>
+
+  <div class="cta-block">
+    <div class="cta-title">HTML-Anything v2 is live now</div>
+    <div class="cta-sub">
+      Available now for internal teams. No sign-up. No credit card. Pilot access is completely
+      free. Paste your first rough note and have a polished page in under 30 seconds.
+    </div>
+    <div class="cta-links">
+      <a href="#" class="btn">Access HTML-Anything v2</a>
+      <a href="#"

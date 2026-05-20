@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumen v0.4 — Calendar that defends your focus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body style="margin:0;padding:0;background:#FBFBFA;color:#1A1A19;font-family:'Inter Tight',system-ui,sans-serif;font-size:16px;line-height:1.55;">
+
+<!-- FLOATING PILL NAV -->
+<div style="position:sticky;top:16px;z-index:100;display:flex;justify-content:center;pointer-events:none;">
+  <nav style="pointer-events:all;display:flex;align-items:center;gap:0;background:rgba(251,251,250,0.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid #EAEAEA;border-radius:999px;padding:6px 8px;gap:4px;">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#1A1A19;font-weight:500;padding:6px 16px;">Lumen</span>
+    <span style="width:1px;height:16px;background:#EAEAEA;display:inline-block;"></span>
+    <a href="#features" style="text-decoration:none;color:#787774;font-size:13px;font-weight:500;padding:6px 14px;border-radius:999px;transition:background 0.15s;">Features</a>
+    <a href="#results" style="text-decoration:none;color:#787774;font-size:13px;font-weight:500;padding:6px 14px;border-radius:999px;">Results</a>
+    <a href="#pricing" style="text-decoration:none;color:#787774;font-size:13px;font-weight:500;padding:6px 14px;border-radius:999px;">Pricing</a>
+    <a href="#faq" style="text-decoration:none;color:#787774;font-size:13px;font-weight:500;padding:6px 14px;border-radius:999px;">FAQ</a>
+    <a href="#pricing" style="text-decoration:none;color:#FBFBFA;background:#1A1A19;font-size:13px;font-weight:600;padding:7px 18px;border-radius:999px;margin-left:4px;">Get v0.4</a>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section style="max-width:1200px;margin:0 auto;padding:80px 40px 72px;">
+  <div style="display:flex;align-items:flex-start;gap:48px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:280px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">Release / v0.4</span>
+        <span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-family:'Inter Tight',sans-serif;font-weight:500;">Now live</span>
+      </div>
+      <h1 style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-weight:400;font-size:clamp(48px,7vw,96px);line-height:1.0;letter-spacing:-0.025em;margin:0 0 28px;max-width:16ch;color:#1A1A19;">
+        The calendar that <span style="font-style:italic;color:#787774;">defends</span> your focus.
+      </h1>
+      <p style="font-size:17px;color:#787774;max-width:48ch;margin:0 0 36px;line-height:1.6;">
+        Auto-Blocks intelligently reserves 90-minute deep-work slots before meetings fill them up — entirely on-device, no manual wrangling.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="#pricing" style="display:inline-block;text-decoration:none;background:#1A1A19;color:#FBFBFA;font-size:14px;font-weight:600;padding:12px 28px;border-radius:999px;">Update to v0.4</a>
+        <a href="#features" style="display:inline-block;text-decoration:none;background:transparent;color:#1A1A19;font-size:14px;font-weight:500;padding:12px 28px;border-radius:999px;border:1px solid #EAEAEA;">See what's new</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;min-width:200px;padding-top:16px;">
+      <div style="border:1px solid #EAEAEA;padding:20px 24px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;margin-bottom:8px;">Deep work / week</div>
+        <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:36px;font-weight:400;line-height:1;color:#1A1A19;">11.7 <span style="font-style:italic;color:#787774;font-size:22px;">hrs</span></div>
+        <div style="margin-top:6px;"><span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">+178%</span></div>
+      </div>
+      <div style="border:1px solid #EAEAEA;padding:20px 24px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;margin-bottom:8px;">Felt productive</div>
+        <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:36px;font-weight:400;line-height:1;color:#1A1A19;">78 <span style="font-style:italic;color:#787774;font-size:22px;">%</span></div>
+        <div style="margin-top:6px;"><span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">+37 pp</span></div>
+      </div>
+      <div style="border:1px solid #EAEAEA;padding:20px 24px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;margin-bottom:8px;">Meeting overruns</div>
+        <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:36px;font-weight:400;line-height:1;color:#1A1A19;">12 <span style="font-style:italic;color:#787774;font-size:22px;">%</span></div>
+        <div style="margin-top:6px;"><span style="background:#FDEBEC;color:#9F2F2D;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">−26 pp</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="width:100%;height:1px;background:#EAEAEA;"></div>
+
+<!-- FEATURES BENTO GRID -->
+<section id="features" style="max-width:1200px;margin:0 auto;padding:64px 40px 0;">
+  <div style="margin-bottom:32px;">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">02 / What's new in v0.4</span>
+  </div>
+</section>
+
+<div style="max-width:1200px;margin:0 auto 0;padding:0 40px 64px;">
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:0;background:#EAEAEA;">
+
+    <!-- Auto-Blocks — large cell -->
+    <div style="grid-column:span 4;background:#FFFFFF;padding:36px 40px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">01 / engine</span>
+        <span style="background:#E1F3FE;color:#1F6C9F;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">Auto-Blocks</span>
+        <span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">New</span>
+      </div>
+      <h3 style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:28px;font-weight:400;letter-spacing:-0.02em;margin:0 0 12px;line-height:1.2;">
+        An engine that <span style="font-style:italic;color:#787774;">reserves</span> your best hours before anyone else can.
+      </h3>
+      <p style="font-size:14px;color:#787774;margin:0 0 24px;max-width:52ch;">
+        Reads your calendar and working hours in real time. Schedules 90-minute deep-work blocks at optimal slots. Runs entirely on-device — no meeting data ever leaves your device.
+      </p>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+        <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#787774;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px;flex-shrink:0;"></span>
+          On-device ML model learns your patterns over time
+        </li>
+        <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#787774;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px;flex-shrink:0;"></span>
+          Adjustable block length: 60–120 minutes
+        </li>
+        <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#787774;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px;flex-shrink:0;"></span>
+          Works offline — scheduling engine never needs a connection
+        </li>
+      </ul>
+    </div>
+
+    <!-- Privacy cell -->
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">02 / privacy</span>
+      </div>
+      <h3 style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:22px;font-weight:400;letter-spacing:-0.02em;margin:0 0 12px;line-height:1.2;">
+        <span style="font-style:italic;color:#787774;">Private</span> by default.
+      </h3>
+      <p style="font-size:14px;color:#787774;margin:0 0 20px;">
+        Meeting titles, attendees, and calendar data never leave your device. Local heuristics only.
+      </p>
+      <span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">On-device</span>
+    </div>
+
+    <!-- Slack Snooze -->
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">03 / integrations</span>
+        <span style="background:#FBF3DB;color:#956400;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">Slack</span>
+      </div>
+      <h3 style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:22px;font-weight:400;letter-spacing:-0.02em;margin:0 0 12px;line-height:1.2;">
+        Slack <span style="font-style:italic;color:#787774;">snooze</span> sync.
+      </h3>
+      <p style="font-size:14px;color:#787774;margin:0;">
+        Automatically silences Slack notifications during active deep-work blocks. No context-switching.
+      </p>
+    </div>
+
+    <!-- iOS Widget -->
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">04 / mobile</span>
+        <span style="background:#E1F3FE;color:#1F6C9F;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">iOS</span>
+      </div>
+      <h3 style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:22px;font-weight:400;letter-spacing:-0.02em;margin:0 0 12px;line-height:1.2;">
+        Home screen <span style="font-style:italic;color:#787774;">widget.</span>
+      </h3>
+      <p style="font-size:14px;color:#787774;margin:0 0 16px;">
+        Quick glance at your next block. Real-time countdown. One tap to details.
+      </p>
+      <div style="border:1px solid #EAEAEA;padding:14px 16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#787774;margin-bottom:4px;">Next block in</div>
+        <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:28px;font-weight:400;color:#1A1A19;line-height:1;">1<span style="font-style:italic;color:#787774;font-size:18px;">h</span> 24<span style="font-style:italic;color:#787774;font-size:18px;">m</span></div>
+      </div>
+    </div>
+
+    <!-- Team Mode — wide -->
+    <div style="grid-column:span 4;background:#FFFFFF;padding:36px 40px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">05 / collaboration</span>
+        <span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">Team mode</span>
+        <span style="background:#FBF3DB;color:#956400;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">New</span>
+      </div>
+      <h3 style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:28px;font-weight:400;letter-spacing:-0.02em;margin:0 0 12px;line-height:1.2;">
+        See your team's focus time without <span style="font-style:italic;color:#787774;">exposing</span> their calendar.
+      </h3>
+      <p style="font-size:14px;color:#787774;margin:0 0 24px;max-width:52ch;">
+        A shared view of when teammates are in deep-work mode. Meeting titles stay private. Async coordination, fewer interruptions.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#EAEAEA;">
+        <div style="background:#FBFBFA;padding:16px 18px;text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#787774;margin-bottom:6px;">Alex</div>
+          <span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">In focus</span>
+        </div>
+        <div style="background:#FBFBFA;padding:16px 18px;text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#787774;margin-bottom:6px;">Jamie</div>
+          <span style="background:#FBF3DB;color:#956400;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">Available</span>
+        </div>
+        <div style="background:#FBFBFA;padding:16px 18px;text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#787774;margin-bottom:6px;">Morgan</div>
+          <span style="background:#EDF3EC;color:#346538;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">In focus</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div style="width:100%;height:1px;background:#EAEAEA;"></div>
+
+<!-- BETA RESULTS -->
+<section id="results" style="max-width:1200px;margin:0 auto;padding:64px 40px;">
+  <div style="margin-bottom:40px;">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">03 / Beta results — 210 founders, 6 weeks</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:0;background:#EAEAEA;">
+
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;margin-bottom:16px;">Deep work / week</div>
+      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#787774;margin-bottom:4px;">Before</div>
+          <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:32px;font-weight:400;color:#787774;line-height:1;">4.2h</div>
+        </div>
+        <div style="color:#EAEAEA;font-size:20px;">→</div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#787774;margin-bottom:4px;">After</div>
+          <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:32px;font-weight:400;color:#1A1A19;line-height:1;">11.7h</div>
+        </div>
+      </div>
+      <span style="background:#EDF3EC;color:#346538;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600;">+178%</span>
+    </div>
+
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;margin-bottom:16px;">Meeting overrun rate</div>
+      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#787774;margin-bottom:4px;">Before</div>
+          <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:32px;font-weight:400;color:#787774;line-height:1;">38%</div>
+        </div>
+        <div style="color:#EAEAEA;font-size:20px;">→</div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#787774;margin-bottom:4px;">After</div>
+          <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:32px;font-weight:400;color:#1A1A19;line-height:1;">12%</div>
+        </div>
+      </div>
+      <span style="background:#FDEBEC;color:#9F2F2D;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600;">−26 pp</span>
+    </div>
+
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;margin-bottom:16px;">"Felt productive today"</div>
+      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#787774;margin-bottom:4px;">Before</div>
+          <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:32px;font-weight:400;color:#787774;line-height:1;">41%</div>
+        </div>
+        <div style="color:#EAEAEA;font-size:20px;">→</div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#787774;margin-bottom:4px;">After</div>
+          <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:32px;font-weight:400;color:#1A1A19;line-height:1;">78%</div>
+        </div>
+      </div>
+      <span style="background:#EDF3EC;color:#346538;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600;">+37 pp</span>
+    </div>
+
+    <div style="grid-column:span 6;background:#FBFBFA;padding:20px 32px;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#787774;margin:0;letter-spacing:0.04em;">
+        Closed beta — 210 founders — 6-week period. Self-reported productivity metric collected via end-of-day prompts.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<div style="width:100%;height:1px;background:#EAEAEA;"></div>
+
+<!-- PRICING -->
+<section id="pricing" style="max-width:1200px;margin:0 auto;padding:64px 40px;">
+  <div style="margin-bottom:40px;">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">04 / Pricing</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:0;background:#EAEAEA;">
+
+    <!-- Individual -->
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;margin-bottom:20px;">Individual</div>
+      <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:44px;font-weight:400;line-height:1;color:#1A1A19;margin-bottom:4px;">$9</div>
+      <div style="font-size:13px;color:#787774;margin-bottom:24px;">per month</div>
+      <ul style="list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:8px;">
+        <li style="font-size:13px;color:#787774;display:flex;gap:8px;align-items:flex-start;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px;flex-shrink:0;"></span>
+          Auto-Blocks engine
+        </li>
+        <li style="font-size:13px;color:#787774;display:flex;gap:8px;align-items:flex-start;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px;flex-shrink:0;"></span>
+          Slack snooze sync
+        </li>
+        <li style="font-size:13px;color:#787774;display:flex;gap:8px;align-items:flex-start;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px;flex-shrink:0;"></span>
+          iOS widget
+        </li>
+      </ul>
+      <a href="#" style="display:inline-block;text-decoration:none;border:1px solid #1A1A19;color:#1A1A19;font-size:13px;font-weight:600;padding:10px 22px;border-radius:999px;">Get started</a>
+    </div>
+
+    <!-- Team -->
+    <div style="grid-column:span 2;background:#FFFFFF;padding:36px 32px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#787774;">Team</span>
+        <span style="background:#E1F3FE;color:#1F6C9F;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:500;">3+ seats</span>
+      </div>
+      <div style="font-family:'Instrument Serif',ui-serif,Georgia,serif;font-size:44px;font-weight:400;line-height:1;color:#1A1A19;margin-bottom:4px;">$7</div>
+      <div style="font-size:13px;color:#787774;margin-bottom:24px;">per seat / month</div>
+      <ul style="list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:8px;">
+        <li style="font-size:13px;color:#787774;display:flex;gap:8px;align-items:flex-start;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px;flex-shrink:0;"></span>
+          Everything in Individual
+        </li>
+        <li style="font-size:13px;color:#787774;display:flex;gap:8px;align-items:flex-start;">
+          <span style="width:4px;height:4px;border-radius:50%;background:#787774;margin-top:8px

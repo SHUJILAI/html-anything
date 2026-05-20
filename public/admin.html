@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · HTML-Anything</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 28px;
+      background: #0b0c0e; color: #f5f6f8;
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    h1 { font-size: 22px; margin: 0; font-weight: 700; }
+    .crumb { color: #6a6f78; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    a { color: #ff6b35; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: transparent; color: #f5f6f8; border: 1px solid #353940;
+      padding: 7px 14px; border-radius: 7px; cursor: pointer; font: inherit;
+    }
+    button:hover { background: #1d2024; }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px; margin-bottom: 24px;
+    }
+    .stat {
+      background: #16181c; border: 1px solid #24272d; border-radius: 12px; padding: 16px;
+    }
+    .stat-label {
+      font-size: 11px; color: #6a6f78; text-transform: uppercase;
+      letter-spacing: 0.12em; font-weight: 600; margin-bottom: 8px;
+    }
+    .stat-value { font-size: 28px; font-weight: 700; line-height: 1; }
+    .stat-sub { font-size: 12px; color: #a3a8b0; margin-top: 4px; }
+    .panel {
+      background: #16181c; border: 1px solid #24272d; border-radius: 12px;
+      padding: 18px 20px; margin-bottom: 16px;
+    }
+    .panel h2 {
+      font-size: 14px; font-weight: 700; margin: 0 0 12px;
+      letter-spacing: 0.04em; color: #f5f6f8;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .panel h2 .meta { font-size: 11px; color: #6a6f78; font-weight: 500; letter-spacing: 0; }
+    .bars { display: flex; flex-direction: column; gap: 6px; }
+    .bar {
+      display: grid; grid-template-columns: 200px 1fr 60px;
+      align-items: center; gap: 10px; font-size: 13px;
+    }
+    .bar-name { color: #a3a8b0; }
+    .bar-track {
+      height: 16px; background: #1d2024; border-radius: 4px; overflow: hidden;
+      position: relative;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b35, #ff8a5b);
+      border-radius: 4px;
+    }
+    .bar-count { text-align: right; color: #f5f6f8; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    .hourly-chart {
+      display: flex; align-items: flex-end; gap: 2px; height: 120px;
+      padding: 8px; background: #1d2024; border-radius: 6px;
+    }
+    .hourly-bar {
+      flex: 1; background: linear-gradient(180deg, #ff8a5b, #ff6b35);
+      border-radius: 2px 2px 0 0; min-width: 4px;
+      position: relative;
+    }
+    .hourly-bar:hover::after {
+      content: attr(data-tip); position: absolute; bottom: 100%; left: 50%;
+      transform: translateX(-50%); background: #0b0c0e; border: 1px solid #353940;
+      padding: 4px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap;
+      margin-bottom: 4px;
+    }
+    .empty { color: #6a6f78; padding: 32px 0; text-align: center; }
+    #login {
+      max-width: 400px; margin: 80px auto; padding: 28px;
+      background: #16181c; border: 1px solid #24272d; border-radius: 14px;
+    }
+    #login input {
+      width: 100%; background: #0b0c0e; border: 1px solid #353940;
+      border-radius: 7px; padding: 10px 12px; color: #f5f6f8;
+      font: inherit; margin: 8px 0 14px;
+    }
+    #login button {
+      background: #ff6b35; color: #fff; border-color: #ff6b35; width: 100%;
+      padding: 10px; font-weight: 600;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="login">
+    <h1 style="margin-bottom:12px">HTML-Anything · Admin</h1>
+    <p style="color:#a3a8b0;margin:0 0 8px;font-size:13px">Enter your access token to view stats.</p>
+    <input id="token-input" type="password" placeholder="Access token" autocomplete="off" />
+    <button id="login-btn">Sign in</button>
+    <p id="login-error" style="color:#ef4444;font-size:12px;margin-top:10px;min-height:14px"></p>
+  </div>
+
+  <div id="dashboard" class="wrap hidden">
+    <header>
+      <div>
+        <div class="crumb">Admin · Dashboard</div>
+        <h1>HTML-Anything · Usage</h1>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button id="refresh">↻ Refresh</button>
+        <a href="#" id="download">Download events.jsonl</a>
+        <a href="/" target="_blank">Open tool ↗</a>
+      </div>
+    </header>
+
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <div class="panel">
+      <h2>Top styles <span class="meta" id="top-meta"></span></h2>
+      <div class="bars" id="top-styles"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Hourly volume <span class="meta" id="hourly-meta"></span></h2>
+      <div class="hourly-chart" id="hourly-chart"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Event types</h2>
+      <div class="bars" id="by-event"></div>
+    </div>
+  </div>
+
+  <script>
+    const tokenInput = document.querySelector('#token-input');
+    const loginBtn = document.querySelector('#login-btn');
+    const loginErr = document.querySelector('#login-error');
+    const loginBox = document.querySelector('#login');
+    const dash = document.querySelector('#dashboard');
+
+    // Auto-fill from localStorage
+    const stored = localStorage.getItem('ha_token');
+    if (stored) tokenInput.value = stored;
+
+    loginBtn.addEventListener('click', login);
+    tokenInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') login(); });
+
+    async function login() {
+      const token = tokenInput.value.trim();
+      if (!token) return;
+      loginErr.textContent = '';
+      try {
+        const res = await fetch('/admin/stats.json?limit=10000', { headers: { 'x-ha-token': token } });
+        if (res.status === 401) { loginErr.textContent = 'Wrong token'; return; }
+        if (!res.ok) { loginErr.textContent = 'Error: HTTP ' + res.status; return; }
+        const stats = await res.json();
+        localStorage.setItem('ha_token', token);
+        loginBox.classList.add('hidden');
+        dash.classList.remove('hidden');
+        render(stats);
+      } catch (e) {
+        loginErr.textContent = 'Network error: ' + e.message;
+      }
+    }
+
+    document.querySelector('#refresh').addEventListener('click', async () => {
+      const token = localStorage.getItem('ha_token');
+      const res = await fetch('/admin/stats.json?limit=10000', { headers: { 'x-ha-token': token } });
+      render(await res.json());
+    });
+
+    document.querySelector('#download').addEventListener('click', async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem('ha_token');
+      const res = await fetch('/admin/events.jsonl', { headers: { 'x-ha-token': token } });
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'events.jsonl'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    function render(s) {
+      const grid = document.querySelector('#stats-grid');
+      grid.innerHTML = '';
+      const cards = [
+        { label: 'Total events', value: s.total, sub: '' },
+        { label: 'Generations', value: s.byEvent?.generate || 0, sub: `${s.successCount} ok · ${s.errorCount} err` },
+        { label: 'Success rate', value: s.successRate !== null ? Math.round(s.successRate * 100) + '%' : '—', sub: '' },
+        { label: 'Avg latency', value: s.avgLatencyMs ? (s.avgLatencyMs / 1000).toFixed(1) + 's' : '—', sub: '' },
+        { label: 'Avg content', value: s.avgContentLen ? s.avgContentLen + ' ch' : '—', sub: '' },
+        { label: 'Unique IPs', value: s.uniqueIps, sub: '' },
+        { label: 'Shares', value: s.byEvent?.share || 0, sub: '' },
+      ];
+      for (const c of cards) {
+        const div = document.createElement('div');
+        div.className = 'stat';
+        div.innerHTML = `<div class="stat-label">${c.label}</div><div class="stat-value">${c.value}</div>${c.sub ? `<div class="stat-sub">${c.sub}</div>` : ''}`;
+        grid.appendChild(div);
+      }
+
+      // Top styles bars
+      const ts = document.querySelector('#top-styles');
+      ts.innerHTML = '';
+      const max = Math.max(1, ...(s.topStyles || []).map((x) => x.count));
+      document.querySelector('#top-meta').textContent = `${(s.topStyles || []).length} styles used`;
+      if (!(s.topStyles || []).length) {
+        ts.innerHTML = '<div class="empty">No data yet — generate some pages and refresh.</div>';
+      } else {
+        for (const row of s.topStyles) {
+          const w = (row.count / max * 100).toFixed(1);
+          const bar = document.createElement('div');
+          bar.className = 'bar';
+          bar.innerHTML = `<div class="bar-name">${escapeHtml(row.id)}</div><div class="bar-track"><div class="bar-fill" style="width:${w}%"></div></div><div class="bar-count">${row.count}</div>`;
+          ts.appendChild(bar);
+        }
+      }
+
+      // Hourly chart
+      const hc = document.querySelector('#hourly-chart');
+      hc.innerHTML = '';
+      const hourly = (s.hourly || []).slice(-48);
+      document.querySelector('#hourly-meta').textContent = hourly.length ? `last ${hourly.length}h` : '';
+      const hMax = Math.max(1, ...hourly.map((x) => x.count));
+      if (!hourly.length) {
+        hc.innerHTML = '<div class="empty" style="margin:auto">No data yet</div>';
+      } else {
+        for (const row of hourly) {
+          const h = (row.count / hMax * 100).toFixed(1);
+          const bar = document.createElement('div');
+          bar.className = 'hourly-bar';
+          bar.style.height = h + '%';
+          bar.dataset.tip = `${row.hour}: ${row.count}`;
+          hc.appendChild(bar);
+        }
+      }
+
+      // By event
+      const be = document.querySelector('#by-event');
+      be.innerHTML = '';
+      const eMax = Math.max(1, ...Object.values(s.byEvent || {}));
+      for (const [k, v] of Object.entries(s.byEvent || {})) {
+        const w = (v / eMax * 100).toFixed(1);
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.innerHTML = `<div class="bar-name">${escapeHtml(k)}</div><div class="bar-track"><div class="bar-fill" style="width:${w}%"></div></div><div class="bar-count">${v}</div>`;
+        be.appendChild(bar);
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    }
+
+    // Try auto-login if we have a token
+    if (stored) login();
+  </script>
+</body>
+</html>

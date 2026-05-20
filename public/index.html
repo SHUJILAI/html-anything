@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML-Anything · Happycapy</title>
+    <meta name="description" content="Turn any markdown or text into a beautifully designed HTML page — 15 hand-crafted styles, one click." />
+    <link rel="stylesheet" href="style.css?v=4-quadrant" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff6b35'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='-apple-system' font-weight='800' font-size='16' fill='white'%3EH%2F%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo">H/</div>
+        <div class="brand-text">
+          <span class="brand-name">HTML-Anything</span>
+          <span class="brand-sub">by Happycapy</span>
+        </div>
+        <div class="brand-divider"></div>
+        <span class="brand-tagline">Any content → <strong>15 hand-crafted styles</strong></span>
+      </div>
+      <div class="actions">
+        <button id="btn-token" class="ghost" title="Set or clear your access token">
+          <span class="label-only-md" id="token-label">🔑 Token</span>
+        </button>
+        <button id="btn-compare" class="ghost" title="Render same content in 3 styles side-by-side">
+          <span class="label-only-md">⊞ Compare</span>
+        </button>
+        <button id="btn-prompt" class="ghost" title="Inspect the prompt of the selected style">
+          <span class="label-only-md">View prompt</span>
+        </button>
+        <button id="btn-share" class="ghost" disabled>
+          <span class="label-only-md">Share</span>
+        </button>
+        <button id="btn-copy" class="ghost" disabled>
+          <span class="label-only-md">Copy HTML</span>
+        </button>
+        <button id="btn-download" class="ghost" disabled>
+          <span class="label-only-md">Download</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="panel-title">
+          <span>Styles</span>
+          <span class="count" id="style-count">15</span>
+        </div>
+        <div class="filter-row" id="filters">
+          <button class="chip active" data-cat="all">All</button>
+          <button class="chip" data-cat="doc">Doc</button>
+          <button class="chip" data-cat="deck">Deck</button>
+          <button class="chip" data-cat="poster">Poster</button>
+          <button class="chip" data-cat="marketing">Marketing</button>
+          <button class="chip" data-cat="special">Special</button>
+        </div>
+        <div class="style-grid" id="style-grid"></div>
+      </aside>
+
+      <section class="workarea">
+        <div class="composer">
+          <div class="composer-header">
+            <span class="composer-label">What do you want to make?</span>
+            <div class="composer-tools">
+              <div class="sample-menu">
+                <button id="btn-sample" class="ghost-sm">Load sample ▾</button>
+                <div class="sample-menu-list" id="sample-menu-list">
+                  <button data-sample="product">Product launch idea</button>
+                  <button data-sample="doc">Technical doc request</button>
+                  <button data-sample="pitch">Startup pitch sketch</button>
+                  <button data-sample="essay">Essay seed</button>
+                  <button data-sample="changelog">Changelog notes</button>
+                </div>
+              </div>
+              <button id="btn-clear" class="ghost-sm">Clear</button>
+              <button id="btn-generate" class="primary">Generate</button>
+            </div>
+          </div>
+          <textarea id="input" placeholder="Describe what you want to make. e.g.&#10;&#10;  • a launch post for my AI calendar app, target busy founders, focus on auto-blocks&#10;  • a technical doc for our rate-limiter (sliding window, 12/min, in-memory)&#10;  • a pitch for Cabin — agent that ships side projects — raising $4M seed&#10;&#10;Pick a style on the left, hit Generate. We'll structure your input automatically."></textarea>
+          <div class="composer-footer">
+            <label class="toggle" title="Skip auto-structuring — use your input as-is (already formatted Markdown).">
+              <input type="checkbox" id="raw-mode" />
+              <span>Raw mode <span class="toggle-hint">— skip auto-structure</span></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="preview-pane">
+          <div class="preview-header">
+            <span class="preview-label">
+              Preview <span id="active-style-name" class="muted">— select a style</span>
+            </span>
+            <div class="preview-tabs">
+              <button class="tab active" data-tab="preview">Preview</button>
+              <button class="tab" data-tab="outline" title="The structured Markdown brief produced by the optimizer">Outline</button>
+              <button class="tab" data-tab="source">Source</button>
+            </div>
+          </div>
+          <div class="preview-frame" id="preview-frame">
+            <div class="placeholder">
+              <div class="placeholder-emoji">H/</div>
+              <h2>Make any content beautiful</h2>
+              <p>Paste markdown or text on top, pick a style on the left, hit <strong>Generate</strong>. Get a complete, share-ready HTML page in seconds.</p>
+              <div class="placeholder-cta">
+                <span class="placeholder-feature">⚡ &lt; 30s</span>
+                <span class="placeholder-feature">🎨 15 styles</span>
+                <span class="placeholder-feature">📦 Zero dependencies</span>
+                <span class="placeholder-feature">🔗 One-click share</span>
+              </div>
+            </div>
+          </div>
+          <pre class="preview-source" id="preview-source" hidden></pre>
+          <pre class="preview-source" id="preview-outline" hidden></pre>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <dialog id="token-dialog">
+      <form method="dialog">
+        <h3>Access token</h3>
+        <p style="color:var(--text-dim);font-size:13px;margin:0 0 12px">
+          The server may require a token to call <code>/api/generate</code>. Paste it here — it stays in your browser.
+        </p>
+        <input id="token-field" type="password" autocomplete="off" placeholder="Paste token, leave blank to clear"
+          style="width:100%;background:var(--bg);border:1px solid var(--border-strong);border-radius:7px;padding:10px 12px;color:var(--text);font:inherit;margin-bottom:12px" />
+        <menu>
+          <button type="button" id="token-clear" class="ghost-sm">Clear</button>
+          <button type="button" id="token-save" class="primary">Save</button>
+          <button class="ghost-sm">Cancel</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog id="prompt-dialog">
+      <form method="dialog">
+        <h3 id="prompt-dialog-title">Style prompt</h3>
+        <pre id="prompt-dialog-body"></pre>
+        <menu>
+          <button id="prompt-copy" type="button" class="ghost-sm">Copy</button>
+          <button class="primary">Close</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog id="compare-dialog">
+      <form method="dialog">
+        <h3>Compare styles side-by-side</h3>
+        <p style="color:var(--text-dim);font-size:13px;margin:0 0 12px">Pick 2 or 3 styles. Same content, rendered in parallel.</p>
+        <div id="compare-pick" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:50vh;overflow:auto"></div>
+        <menu>
+          <span id="compare-count" style="color:var(--text-mute);font-size:12px;margin-right:auto;align-self:center">0 selected</span>
+          <button type="button" id="compare-cancel" class="ghost-sm">Cancel</button>
+          <button type="button" id="compare-go" class="primary" disabled>Render selected</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="samples.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+node_modules/
+.env
+data/events.jsonl
+shares/
+nohup.out
+*.log
+.DS_Store

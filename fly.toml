@@ -1,0 +1,27 @@
+# Fly.io deployment config.
+# Run:  flyctl launch --copy-config --no-deploy
+#       flyctl secrets set AI_GATEWAY_BASE_URL=... AI_GATEWAY_API_KEY=... ACCESS_TOKEN=...
+#       flyctl deploy
+app = "html-anything"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "8080"
+  HA_MODEL = "anthropic/claude-sonnet-4.6"
+  MAX_CONTENT_CHARS = "50000"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256

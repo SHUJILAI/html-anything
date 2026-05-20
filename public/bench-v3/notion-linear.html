@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumen v0.4 — Calendar that defends your focus</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #fafaf9;
+    --fg: #1c1b1a;
+    --muted: #6b6964;
+    --border: #e6e4e0;
+    --accent: #c96442;
+    --code-bg: #f4f4f2;
+    --surface: #ffffff;
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: -apple-system, system-ui, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fg);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .topbar-brand-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .topbar-badge {
+    font-size: 11px;
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-weight: 500;
+    color: var(--accent);
+    background: #fdf1ed;
+    border: 1px solid #f0c9bc;
+    border-radius: 4px;
+    padding: 1px 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .topbar-search {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .topbar-search input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 11px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--fg);
+    width: 200px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .topbar-search input::placeholder { color: var(--muted); }
+  .topbar-search input:focus { border-color: var(--accent); }
+
+  /* ── THREE-COLUMN LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) 220px;
+    min-height: calc(100vh - 50px);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 28px 0 40px;
+    position: sticky;
+    top: 50px;
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+
+  .sidebar-group {
+    margin-bottom: 24px;
+  }
+
+  .group-label {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    padding: 0 20px 8px;
+    display: block;
+  }
+
+  .sidebar a {
+    display: block;
+    font-size: 13.5px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 5px 20px;
+    border-radius: 0;
+    transition: color 0.1s, background 0.1s;
+  }
+
+  .sidebar a:hover {
+    color: var(--fg);
+    background: var(--bg);
+  }
+
+  .sidebar a.active {
+    background: var(--accent);
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .sidebar a.active:hover {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  /* ── ARTICLE ── */
+  .article-wrap {
+    padding: 48px 52px 80px;
+    min-width: 0;
+  }
+
+  article {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  article h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+
+  .article-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .article-meta-sep {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-block;
+  }
+
+  article p {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--fg);
+    margin-bottom: 18px;
+  }
+
+  article h2 {
+    font-size: 22px;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+    margin-top: 48px;
+    margin-bottom: 14px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+
+  article h3 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    margin-top: 28px;
+    margin-bottom: 8px;
+  }
+
+  article ul, article ol {
+    padding-left: 20px;
+    margin-bottom: 18px;
+  }
+
+  article li {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--fg);
+    margin-bottom: 5px;
+  }
+
+  article ol li { list-style: decimal; }
+  article ul li { list-style: disc; }
+
+  article code {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 13px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: var(--accent);
+  }
+
+  article strong { font-weight: 600; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    background: #fdf1ed;
+    padding: 14px 18px;
+    margin: 28px 0;
+  }
+
+  .callout-label {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+
+  .callout p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg);
+    margin-bottom: 0;
+  }
+
+  .callout code {
+    background: #f5ddd5;
+    border-color: #e8bfb0;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 22px 0;
+    overflow-x: auto;
+  }
+
+  .code-block-header {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .code-block pre {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--fg);
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead {
+    background: var(--code-bg);
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  td:last-child {
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  /* ── FAQ ITEMS ── */
+  .faq-item {
+    border-top: 1px solid var(--border);
+    padding: 18px 0;
+  }
+
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq-q {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 7px;
+  }
+
+  .faq-a {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* ── PRICING GRID ── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 22px 0;
+  }
+
+  .pricing-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    background: var(--surface);
+  }
+
+  .pricing-card-name {
+    font-size: 11px;
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .pricing-card-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .pricing-card-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .pricing-card.featured {
+    border-color: var(--accent);
+  }
+
+  .pricing-card.featured .pricing-card-name {
+    color: var(--accent);
+  }
+
+  /* ── PAGER ── */
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .pager-btn {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    text-decoration: none;
+    color: var(--fg);
+    background: var(--surface);
+    transition: border-color 0.15s;
+    max-width: 260px;
+  }
+
+  .pager-btn:hover { border-color: var(--accent); }
+
+  .pager-btn.next { text-align: right; margin-left: auto; }
+
+  .pager-direction {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .pager-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fg);
+  }
+
+  /* ── RIGHT TOC ── */
+  .toc {
+    padding: 28px 20px 40px 24px;
+    position: sticky;
+    top: 50px;
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+
+  .toc-label {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .toc a {
+    display: block;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 3.5px 0 3.5px 10px;
+    border-left: 2px solid var(--border);
+    transition: color 0.1s, border-color 0.1s;
+    margin-bottom: 1px;
+  }
+
+  .toc a:hover {
+    color: var(--fg);
+    border-left-color: var(--accent);
+  }
+
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+  }
+
+  .toc a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      display: none;
+    }
+
+    .toc {
+      display: none;
+    }
+
+    .article-wrap {
+      padding: 28px 20px 60px;
+    }
+
+    article h1 { font-size: 27px; }
+    article h2 { font-size: 19px; }
+
+    .topbar-search input { width: 140px; }
+
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="#" class="topbar-brand">
+    <span class="topbar-brand-dot"></span>
+    Lumen
+    <span class="topbar-badge">v0.4</span>
+  </a>
+  <div class="topbar-search">
+    <input type="search" placeholder="Search docs…" aria-label="Search documentation">
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-group">
+      <span class="group-label">Release Notes</span>
+      <a href="#" class="active">Lumen v0.4</a>
+      <a href="#">Lumen v0.3</a>
+      <a href="#">Lumen v0.2</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="group-label">Core Features</span>
+      <a href="#auto-blocks">Auto-Blocks engine</a>
+      <a href="#slack-snooze">Slack snooze sync</a>
+      <a href="#ios-widget">iOS widget</a>
+      <a href="#team-mode">Team mode</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="group-label">Getting Started</span>
+      <a href="#getting-started">Setup guide</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="sidebar-group">
+      <span class="group-label">Resources</span>
+      <a href="#">Community</a>
+      <a href="#">Roadmap</a>
+      <a href="#">Changelog</a>
+    </div>
+  </nav>
+
+  <!-- ARTICLE -->
+  <main class="article-wrap">
+    <article>
+
+      <h1 id="overview">Lumen v0.4 — Calendar that defends your focus</h1>
+      <div class="article-meta">
+        <span>Release Notes</span>
+        <span class="article-meta-sep"></span>
+        <span>v0.4</span>
+        <span class="article-meta-sep"></span>
+        <span>Auto-Blocks · Slack Sync · iOS Widget · Team Mode</span>
+      </div>
+
+      <p>
+        Lumen v0.4 introduces <strong>Auto-Blocks</strong>, an intelligent scheduling engine that automatically
+        reserves 90-minute deep-work slots in your calendar before meetings crowd them out. By reading your
+        existing meetings and working hours, Auto-Blocks ensures you have protected time for focused work —
+        no manual calendar Tetris required.
+      </p>
+      <p>
+        This release is built on closed-beta feedback from 210 founders over 6 weeks and includes four major
+        features designed to keep distractions at bay.
+      </p>
+
+      <div class="callout">
+        <div class="callout-label">Lifetime Deal</div>
+        <p>
+          For the first 500 customers, a one-time lifetime license is available at <strong>$129</strong>.
+          Use code <code>FOCUS129</code> at checkout to unlock all future updates and features.
+        </p>
+      </div>
+
+      <!-- WHAT'S NEW -->
+      <h2 id="whats-new">What's new in v0.4</h2>
+
+      <h3 id="auto-blocks">Auto-Blocks engine</h3>
+      <ul>
+        <li>Heuristic + small on-device model analyzes your calendar and working hours</li>
+        <li>Automatically schedules 90-minute deep-work blocks in available slots</li>
+        <li>Runs continuously as your calendar changes</li>
+        <li>No cloud processing — all logic stays on your device</li>
+      </ul>
+
+      <h3 id="slack-snooze">Slack snooze sync</h3>
+      <ul>
+        <li>Lumen mutes Slack notifications during active blocks</li>
+        <li>Prevents meeting pings and message alerts from breaking focus</li>
+        <li>Automatically re-enables notifications when a block ends</li>
+      </ul>
+
+      <h3 id="ios-widget">iOS widget</h3>
+      <ul>
+        <li>Quick glance at your next scheduled block</li>
+        <li>Shows time remaining until the block starts</li>
+        <li>One-tap access to block details</li>
+      </ul>
+
+      <h3 id="team-mode">Team mode</h3>
+      <ul>
+        <li>View your team's deep-work blocks on a shared calendar</li>
+        <li>See block availability without exposing meeting titles</li>
+        <li>Coordinate async work and reduce unnecessary meetings</li>
+      </ul>
+
+      <!-- BETA RESULTS -->
+      <h2 id="beta-results">Closed-beta results</h2>
+      <p>Data collected from 210 founders across a 6-week beta program.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Before</th>
+              <th>After</th>
+              <th>Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Avg deep-work time per week</td>
+              <td>4.2 h</td>
+              <td>11.7 h</td>
+              <td>+179%</td>
+            </tr>
+            <tr>
+              <td>Meeting overrun rate</td>
+              <td>38%</td>
+              <td>12%</td>
+              <td>−68%</td>
+            </tr>
+            <tr>
+              <td>Reported "felt productive today"</td>
+              <td>41%</td>
+              <td>78%</td>
+              <td>+90%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PRICING -->
+      <h2 id="pricing">Pricing</h2>
+      <p>Simple, transparent pricing. All plans include Auto-Blocks and Slack sync.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-card-name">Individual</div>
+          <div class="pricing-card-price">$9<span style="font-size:14px;font-weight:500;color:var(--muted)">/mo</span></div>
+          <div class="pricing-card-desc">All features for solo users</div>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-card-name">Team</div>
+          <div class="pricing-card-price">$7<span style="font-size:14px;font-weight:500;color:var(--muted)">/seat/mo</span></div>
+          <div class="pricing-card-desc">Minimum 3 seats. Includes Team mode.</div>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-card-name">Lifetime</div>
+          <div class="pricing-card-price">$129</div>
+          <div class="pricing-card-desc">One-time. First 500 customers only. All future updates included.</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header">Lifetime deal — promo code</div>
+        <pre>FOCUS129</pre>
+      </div>
+
+      <!-- GETTING STARTED -->
+      <h2 id="getting-started">Getting started</h2>
+      <p>You can be up and running with Auto-Blocks in under five minutes.</p>
+
+      <ol>
+        <li>Download Lumen or log in to your existing account</li>
+        <li>Grant calendar access (Google Calendar or Outlook)</li>
+        <li>Set your working hours and meeting preferences</li>
+        <li>Auto-Blocks will begin scheduling deep-work slots immediately</li>
+        <li><strong>Optional:</strong> connect Slack for notification snooze sync</li>
+      </ol>
+
+      <!-- FAQ -->
+      <h2 id="faq">FAQ</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">How does Auto-Blocks know when to schedule blocks?</div>
+        <p class="faq-a">Auto-Blocks reads your calendar to find gaps between meetings and respects your working hours. It prioritizes morning slots (when focus is typically highest) and avoids scheduling blocks during known busy periods.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I customize block length?</div>
+        <p class="faq-a">In v0.4, blocks are fixed at 90 minutes. Custom durations are on the roadmap.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What if I need to move or cancel a block?</div>
+        <p class="faq-a">Blocks are regular calendar events. You can reschedule or delete them like any other calendar item. Auto-Blocks will not re-create a block for that time slot.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does Auto-Blocks work offline?</div>
+        <p class="faq-a">The scheduling engine runs on-device, but calendar sync requires a connection. Changes sync automatically when you reconnect.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Is my meeting data private?</div>
+        <p class="faq-a">Yes. Auto-Blocks processes your calendar locally. Meeting titles and details never leave your device.</p>
+      </div>
+
+      <!-- NEXT STEPS -->
+      <h2 id="next-steps">Next steps</h2>
+      <ul>
+        <li><strong>Upgrade now</strong> and use code <code>FOCUS129</code> for a lifetime deal (first 500 customers)</li>
+        <li><strong>Try the free tier</strong> to test Auto-Blocks with your calendar</li>
+        <li><strong>Join the community</strong> to share feedback and feature requests</li>
+      </ul>
+
+      <!-- PAGER -->
+      <div class="pager">
+        <a href="#" class="pager-btn prev">
+          <div class="pager-direction">← Previous</div>
+          <div class="pager-title">Lumen v0.3 release notes</div>
+        </a>
+        <a href="#" class="pager-btn next">
+          <div class="pager-direction">Next →</div>
+          <div class="pager-title">Roadmap &amp; upcoming features</div>
+        </a>
+      </div>
+
+    </article>
+  </main>
+
+  <!-- RIGHT TOC -->
+  <aside class="toc" aria-label="On this page">
+    <span class="toc-label">On this page</span>
+    <a href="#overview" class="active">Overview</a>
+    <a href="#whats-new">What's new in v0.4</a>
+    <a href="#auto-blocks" class="toc-h3">Auto-Blocks engine</a>
+    <a href="#slack-snooze" class="toc-h3">Slack snooze sync</a>
+    <a href="#ios-widget" class="toc-h3">iOS widget</a>
+    <a href="#team-mode" class="toc-h3">Team mode</a>
+    <a href="#beta-results">Beta results</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#getting-started">Getting started</a>
+    <a href="#faq">FAQ</a>
+    <a href="#next-steps">Next steps</a>
+  </aside>
+
+</div>
+
+</body>
+</html>
