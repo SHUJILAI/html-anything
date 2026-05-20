@@ -2,6 +2,8 @@
 
 > Turn any text or intent into a beautifully designed HTML page — 15 hand-crafted style packs, one click. **Built for Happycapy.ai.**
 
+**Repo:** https://github.com/SHUJILAI/html-anything
+
 **Live demo (web):** https://8080-capy-1775841235697-506885-preview.happycapy.ai
 **Default access token:** `demo-token-1234` (click 🔑 Token in the top-right and paste)
 **Admin dashboard:** https://8080-capy-1775841235697-506885-preview.happycapy.ai/admin
@@ -21,7 +23,7 @@ You write a loose intent or paste a draft, pick a style on the left, hit **Gener
 ## Deploy as a web app
 
 ### One-click on Render (recommended)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/YOUR-ORG/html-anything)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/SHUJILAI/html-anything)
 
 After deploy, set these env vars in the Render dashboard:
 - `AI_GATEWAY_BASE_URL` — your AI gateway endpoint
