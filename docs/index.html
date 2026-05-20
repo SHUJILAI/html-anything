@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML-Anything — Turn any text into a beautiful HTML page</title>
+<meta name="description" content="15 hand-crafted visual style packs. Two-stage LLM pipeline (Haiku optimizer + Sonnet renderer). Open source, one-click deploy to Render / Fly / Docker.">
+<meta property="og:title" content="HTML-Anything">
+<meta property="og:description" content="Turn any text or intent into a beautifully designed HTML page — 15 hand-crafted style packs.">
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f4f3ef;
+  --border: #e7e5dc;
+  --text: #18181b;
+  --muted: #71717a;
+  --accent: #c96442;
+  --accent-2: #1a1a19;
+  --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+/* Top nav */
+.nav { padding: 18px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.brand { font-weight: 800; font-size: 17px; letter-spacing: -0.01em; }
+.brand-mark { display: inline-block; width: 22px; height: 22px; border-radius: 5px; background: var(--accent); color: #fff; font-size: 12px; line-height: 22px; text-align: center; margin-right: 8px; vertical-align: -3px; font-weight: 800; }
+.nav-links { display: flex; gap: 22px; font-size: 14px; }
+.nav-links a { color: var(--muted); }
+
+/* Hero */
+.hero { padding: 80px 0 56px; text-align: center; }
+.hero h1 { font-size: clamp(36px, 6vw, 64px); letter-spacing: -0.035em; line-height: 1.05; font-weight: 800; max-width: 880px; margin: 0 auto 22px; }
+.hero h1 .accent { color: var(--accent); font-style: italic; font-family: "Instrument Serif", Georgia, serif; font-weight: 500; }
+.hero p { font-size: 19px; color: var(--muted); max-width: 620px; margin: 0 auto 34px; }
+.cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px;
+  border-radius: 8px; font-size: 15px; font-weight: 600;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  cursor: pointer; transition: all 0.15s;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-decoration: none; }
+.btn.primary { background: var(--accent-2); color: #fff; border-color: var(--accent-2); }
+.btn.primary:hover { background: #2a2a2a; }
+.btn.deploy { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.deploy:hover { background: #b8593b; }
+.btn svg { width: 16px; height: 16px; }
+
+.tags { display: flex; gap: 8px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+.tag { font-size: 12px; color: var(--muted); background: var(--surface-2); padding: 4px 10px; border-radius: 99px; font-weight: 500; letter-spacing: 0.01em; }
+
+/* Section */
+section { padding: 64px 0; border-top: 1px solid var(--border); }
+.section-title { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 8px; }
+.section-h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.02em; font-weight: 700; margin-bottom: 14px; max-width: 720px; line-height: 1.15; }
+.section-lead { font-size: 17px; color: var(--muted); max-width: 640px; margin-bottom: 40px; }
+
+/* How it works */
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.how-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.how-num { font-family: "Instrument Serif", Georgia, serif; font-size: 32px; color: var(--accent); font-style: italic; line-height: 1; margin-bottom: 10px; }
+.how-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+.how-card p { font-size: 14px; color: var(--muted); }
+.how-card code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; color: var(--text); }
+@media (max-width: 760px) { .how-grid { grid-template-columns: 1fr; } }
+
+/* Style gallery */
+.gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 32px; }
+.style-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: transform 0.15s, box-shadow 0.15s; cursor: pointer;
+}
+.style-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+.style-thumb { aspect-ratio: 16/10; position: relative; border-bottom: 1px solid var(--border); overflow: hidden; }
+.style-meta { padding: 10px 12px; }
+.style-name { font-size: 13px; font-weight: 700; letter-spacing: -0.005em; }
+.style-desc { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; height: 28px; overflow: hidden; }
+.style-cat { display: inline-block; font-size: 9px; color: var(--accent); background: rgba(201, 100, 66, 0.08); padding: 2px 6px; border-radius: 99px; margin-top: 6px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+@media (max-width: 1080px) { .gallery { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 880px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+
+/* Architecture */
+.arch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+.arch-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 12px; align-items: center; margin-top: 8px; font-size: 13px; }
+.arch-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
+.arch-box .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 6px; }
+.arch-box .name { font-weight: 700; font-size: 14px; }
+.arch-box .model { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--accent); margin-top: 4px; }
+.arch-arrow { color: var(--muted); font-size: 22px; }
+@media (max-width: 760px) {
+  .arch-flow { grid-template-columns: 1fr; }
+  .arch-arrow { transform: rotate(90deg); }
+}
+
+/* CTA */
+.cta-final { background: var(--accent-2); color: #fff; padding: 80px 0; text-align: center; border-top: 0; margin-top: 0; }
+.cta-final h2 { color: #fff; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.02em; margin-bottom: 14px; }
+.cta-final p { color: rgba(255, 255, 255, 0.7); font-size: 17px; max-width: 560px; margin: 0 auto 34px; }
+.cta-final .btn { background: #fff; color: var(--accent-2); border-color: #fff; }
+.cta-final .btn:hover { background: #fafaf9; }
+.cta-final .btn.deploy { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Footer */
+.footer { padding: 32px 0; text-align: center; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); }
+.footer a { color: var(--muted); margin: 0 8px; }
+
+/* ============ Style thumbnail mockups (CSS-only, copied from app) ============ */
+.thumb { width: 100%; height: 100%; position: relative; overflow: hidden; }
+.thumb::before, .thumb::after { content: ""; position: absolute; }
+
+.thumb-notion-linear { background: #fff; padding: 14px 16px; }
+.thumb-notion-linear::before { content: "📄 Doc"; font: 600 12px -apple-system, sans-serif; color: #37352f; position: relative; display: block; margin-bottom: 6px; }
+.thumb-notion-linear::after { content: ""; position: absolute; left: 16px; right: 16px; top: 36px; height: 2px; background: #37352f; opacity: 0.85; box-shadow: 0 7px 0 #ddd, 0 13px 0 #ddd, 0 19px 0 #ddd, 0 25px 0 #ddd; border-radius: 1px; }
+
+.thumb-kami-parchment { background: #f5f4ed; padding: 14px 16px; font-family: Georgia, serif; }
+.thumb-kami-parchment::before { content: "Designing"; color: #1f3a8a; font: italic 700 18px Georgia, serif; position: relative; display: block; }
+.thumb-kami-parchment::after { content: ""; position: absolute; left: 16px; right: 16px; top: 50px; height: 1px; background: #2a2620; opacity: 0.4; box-shadow: 0 6px 0 #2a2620aa, 0 12px 0 #2a2620aa, 0 18px 0 #2a2620aa, 0 24px 0 #2a2620aa; }
+
+.thumb-swiss-international { background: #fff; padding: 14px; display: flex; align-items: center; }
+.thumb-swiss-international::before { content: "DESIGN"; color: #0033a0; font: 800 22px "Helvetica Neue", Arial, sans-serif; letter-spacing: -0.04em; position: relative; line-height: 1; }
+.thumb-swiss-international::after { content: ""; position: absolute; right: 14px; top: 14px; width: 32px; height: 6px; background: #0033a0; }
+
+.thumb-eink-editorial { background: #fafaf7; padding: 14px 16px; font-family: Georgia, serif; }
+.thumb-eink-editorial::before { content: "ISSUE 01"; color: #1a1a1a; font: 700 10px "JetBrains Mono", monospace; letter-spacing: 0.2em; position: relative; display: block; }
+.thumb-eink-editorial::after { content: "75"; position: absolute; left: 16px; bottom: 12px; font: 800 44px Georgia, serif; color: #1a1a1a; line-height: 1; }
+
+.thumb-magazine-poster { background: #f4ede0; padding: 12px 14px; font-family: "Playfair Display", Georgia, serif; overflow: hidden; }
+.thumb-magazine-poster::before { content: "You"; color: #15110b; font: italic 800 36px "Playfair Display", Georgia, serif; line-height: 0.85; position: relative; display: block; margin-top: 4px; }
+.thumb-magazine-poster::after { content: "POSTER · TODAY"; color: #c8341c; font: 700 9px monospace; letter-spacing: 0.18em; position: absolute; bottom: 10px; left: 14px; }
+
+.thumb-academic-paper { background: #fff; padding: 12px 18px; font-family: Georgia, serif; }
+.thumb-academic-paper::before { content: "On Foundation Models"; color: #1a1a1a; font: 600 12px Georgia, serif; text-align: center; display: block; position: relative; margin-bottom: 4px; }
+.thumb-academic-paper::after { content: ""; position: absolute; left: 24px; right: 24px; top: 38px; height: 1px; background: #1a1a1a; opacity: 0.85; box-shadow: 0 7px 0 #1a1a1aaa, 0 13px 0 #1a1a1aaa, 0 19px 0 #1a1a1aaa, 0 25px 0 #1a1a1aaa, 0 31px 0 #1a1a1aaa; }
+
+.thumb-terminal-code { background: #0d1117; padding: 14px 16px; font-family: "JetBrains Mono", monospace; }
+.thumb-terminal-code::before { content: "$ render --html"; color: #00ff9c; font: 700 14px monospace; position: relative; display: block; }
+.thumb-terminal-code::after { content: "▸ ok"; color: #c9d1d9; font: 12px monospace; position: absolute; left: 16px; top: 42px; box-shadow: 0 20px 0 #79c0ff, 0 40px 0 #ff7b72; }
+
+.thumb-keynote-modern { background: #fff; padding: 16px 18px; }
+.thumb-keynote-modern::before { content: "Think"; font: 800 36px -apple-system, sans-serif; letter-spacing: -0.04em; background: linear-gradient(135deg, #0071e3, #5e5ce6); -webkit-background-clip: text; background-clip: text; color: transparent; position: relative; display: block; line-height: 1; }
+.thumb-keynote-modern::after { content: "different."; color: #6e6e73; font: 500 16px -apple-system, sans-serif; position: absolute; left: 18px; top: 56px; }
+
+.thumb-minimal-pitch { background: #fff; padding: 16px 18px; }
+.thumb-minimal-pitch::before { content: "01 / 12"; color: #ff5722; font: 700 11px -apple-system, sans-serif; letter-spacing: 0.1em; position: absolute; top: 14px; right: 18px; }
+.thumb-minimal-pitch::after { content: "Ship."; color: #111; font: 800 36px -apple-system, sans-serif; letter-spacing: -0.03em; position: absolute; left: 18px; bottom: 18px; line-height: 1; }
+
+.thumb-vintage-magazine { background: #fdf6e3; padding: 14px 16px; }
+.thumb-vintage-magazine::before { content: "Groovy"; color: #d97706; font: 800 italic 28px "Cooper Black", Georgia, serif; position: relative; display: block; transform: rotate(-2deg); transform-origin: left; }
+.thumb-vintage-magazine::after { content: "★ 1976 ★"; color: #b91c1c; font: 700 12px Georgia, serif; position: absolute; left: 16px; bottom: 12px; }
+
+.thumb-product-landing { background: #fafafa; padding: 14px 16px; }
+.thumb-product-landing::before { content: "Ship faster"; font: 700 18px -apple-system, sans-serif; letter-spacing: -0.02em; background: linear-gradient(135deg, #7c3aed, #ec4899); -webkit-background-clip: text; background-clip: text; color: transparent; position: relative; display: block; }
+.thumb-product-landing::after { content: ""; position: absolute; left: 16px; bottom: 14px; width: 44px; height: 22px; background: linear-gradient(135deg, #7c3aed, #ec4899); border-radius: 5px; box-shadow: 50px 0 0 #fff, 50px 0 0 0.5px #ddd; }
+
+.thumb-handwritten-notes { background: #fffef5; background-image: repeating-linear-gradient(transparent 0, transparent 18px, #d4d0b8 18px, #d4d0b8 19px); padding: 10px 12px 10px 24px; font-family: "Caveat", cursive; position: relative; }
+.thumb-handwritten-notes::before { content: "ideas"; color: #1e3a8a; font: 700 24px "Caveat", cursive; position: relative; display: block; transform: rotate(-1deg); transform-origin: left; text-decoration: underline; text-decoration-color: #c2410c; }
+.thumb-handwritten-notes::after { content: ""; position: absolute; left: 16px; top: 0; bottom: 0; width: 1px; background: #d97570; }
+
+.thumb-card-summary { background: #f8fafc; padding: 10px; display: grid; grid-template-columns: 2fr 1fr; gap: 6px; }
+.thumb-card-summary::before, .thumb-card-summary::after { content: ""; position: relative; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; border-left: 3px solid #10b981; }
+.thumb-card-summary::before { grid-row: 1 / 3; }
+.thumb-card-summary::after { border-left-color: #6366f1; }
+
+.thumb-cyberpunk-neon { background: #0a0014; background-image: linear-gradient(transparent 0, transparent 17px, #1a0030 17px, #1a0030 18px), linear-gradient(90deg, transparent 0, transparent 17px, #1a0030 17px, #1a0030 18px); background-size: 18px 18px; padding: 14px 16px; }
+.thumb-cyberpunk-neon::before { content: "RUN.EXE"; color: #ff00ff; font: 700 18px "Orbitron", monospace; letter-spacing: 0.1em; text-shadow: 0 0 4px #ff00ff, 0 0 12px #ff00ff; position: relative; display: block; }
+.thumb-cyberpunk-neon::after { content: "// 0x42"; color: #00ffff; font: 600 12px monospace; letter-spacing: 0.05em; text-shadow: 0 0 4px #00ffff; position: absolute; left: 16px; bottom: 14px; }
+
+.thumb-brutalist { background: #fff; padding: 10px 12px; font-family: "Times New Roman", Times, serif; }
+.thumb-brutalist::before { content: "RAW."; color: #000; font: 900 36px "Times New Roman", Times, serif; line-height: 0.9; position: relative; display: block; }
+.thumb-brutalist::after { content: "click"; background: #ffff00; color: #000; font: 700 13px "Times New Roman", serif; border: 3px solid #000; position: absolute; left: 14px; bottom: 12px; padding: 2px 8px; }
+</style>
+</head>
+<body>
+
+<nav class="nav wrap">
+  <div class="brand"><span class="brand-mark">H</span>HTML-Anything</div>
+  <div class="nav-links">
+    <a href="#styles">Styles</a>
+    <a href="#how">How it works</a>
+    <a href="#deploy">Deploy</a>
+    <a href="https://github.com/SHUJILAI/html-anything" target="_blank" rel="noopener">GitHub →</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <h1>Turn any text into a <span class="accent">beautifully designed</span> HTML page.</h1>
+  <p>15 hand-crafted style packs. Two-stage LLM pipeline that structures your intent, then renders it with cinematic visual polish. Open source, deploy your own in 60 seconds.</p>
+  <div class="cta-row">
+    <a class="btn deploy" href="https://render.com/deploy?repo=https://github.com/SHUJILAI/html-anything" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Deploy your own
+    </a>
+    <a class="btn primary" href="https://github.com/SHUJILAI/html-anything" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View on GitHub
+    </a>
+  </div>
+  <div class="tags">
+    <span class="tag">15 styles</span>
+    <span class="tag">Claude Sonnet 4.6</span>
+    <span class="tag">Express + Node</span>
+    <span class="tag">MIT licensed</span>
+    <span class="tag">One-click deploy</span>
+  </div>
+</header>
+
+<section id="styles" class="wrap">
+  <div class="section-title">Style Library</div>
+  <h2 class="section-h2">15 hand-crafted visual identities, ready to render.</h2>
+  <p class="section-lead">Every style is a fully-engineered prompt with locked-in palette, typography, layout primitives, and a 30–80 line few-shot HTML anchor. They don't drift.</p>
+
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<section id="how" class="wrap">
+  <div class="section-title">How it works</div>
+  <h2 class="section-h2">A two-stage pipeline that fixes your intent before painting it.</h2>
+  <p class="section-lead">You write loose intent. A fast model (Haiku) restructures it into clean Markdown with the right shape. Then the renderer (Sonnet) lays down the design.</p>
+
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <h3>You drop in intent</h3>
+      <p>"Quarterly review for Q3, three sections, focus on shipping velocity." A draft, a transcript, or a one-liner — anything.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <h3>Optimizer structures it</h3>
+      <p><code>claude-haiku-4.5</code> reshapes it into hierarchical Markdown that fits the chosen style's anatomy. Fast, ~1s.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <h3>Renderer paints HTML</h3>
+      <p><code>claude-sonnet-4.6</code> ingests structured content + the locked style prompt, emits a complete self-contained <code>&lt;!DOCTYPE html&gt;</code>.</p>
+    </div>
+  </div>
+
+  <div class="arch" style="margin-top: 32px;">
+    <div class="section-title">Pipeline</div>
+    <div class="arch-flow">
+      <div class="arch-box">
+        <div class="label">Input</div>
+        <div class="name">Loose intent</div>
+        <div class="model">free text · markdown · transcript</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">
+        <div class="label">Stage 1</div>
+        <div class="name">Optimizer</div>
+        <div class="model">claude-haiku-4.5</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">
+        <div class="label">Stage 2</div>
+        <div class="name">Style Renderer</div>
+        <div class="model">claude-sonnet-4.6</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="deploy" class="cta-final">
+  <div class="wrap">
+    <h2>Run your own instance.</h2>
+    <p>Bring your own AI Gateway key. One-click deploy to Render, Fly.io, or any Docker host. Repo's open source — fork it, modify the styles, ship it.</p>
+    <div class="cta-row">
+      <a class="btn deploy" href="https://render.com/deploy?repo=https://github.com/SHUJILAI/html-anything" target="_blank" rel="noopener">Deploy to Render</a>
+      <a class="btn" href="https://github.com/SHUJILAI/html-anything#deploy-as-a-web-app" target="_blank" rel="noopener">Fly.io / Docker docs</a>
+      <a class="btn" href="https://github.com/SHUJILAI/html-anything" target="_blank" rel="noopener">Source on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <a href="https://github.com/SHUJILAI/html-anything">GitHub</a> ·
+      <a href="https://github.com/SHUJILAI/html-anything/blob/main/DELIVERY.md">Architecture</a> ·
+      <a href="https://github.com/SHUJILAI/html-anything/blob/main/README.md">Docs</a> ·
+      <a href="https://github.com/SHUJILAI/html-anything/blob/main/LICENSE">MIT</a>
+    </div>
+    <div style="margin-top: 8px;">Built for <strong>Happycapy.ai</strong> · Open source · MIT licensed</div>
+  </div>
+</footer>
+
+<script>
+const STYLES = [
+  { id: "notion-linear", name: "Notion / Linear", category: "doc", description: "Stripe/Linear-style three-column docs page with sidebar nav and sticky TOC" },
+  { id: "kami-parchment", name: "Kami Parchment", category: "doc", description: "Print-typeset document on warm parchment with single ink-blue accent" },
+  { id: "swiss-international", name: "Swiss International", category: "deck", description: "Hyper-rational Bauhaus presentation — strict 16-col grid, one saturated accent" },
+  { id: "eink-editorial", name: "E-ink Editorial", category: "doc", description: "Quiet editorial site — Instrument Serif italic accents + bento hairline grid" },
+  { id: "magazine-poster", name: "Magazine Poster", category: "poster", description: "Sunday-paper full-page newsprint poster, oversized serif headline + 6-cell editorial grid" },
+  { id: "academic-paper", name: "Long-form Essay", category: "doc", description: "Engineering long-form — Georgia 18px serif, drop-cap, bleed stat figure, accent blockquote" },
+  { id: "terminal-code", name: "Terminal / Runbook", category: "special", description: "Dark-mode ops runbook with severity-coded alerts and syntax-tokened code blocks" },
+  { id: "keynote-modern", name: "Keynote Modern", category: "deck", description: "Apple Keynote aesthetic — light/dark/brand slides stacked vertically with massive type" },
+  { id: "minimal-pitch", name: "Minimal Pitch", category: "deck", description: "Classic YC fundraising deck — gradient accents, traction bars, ghost section numbers" },
+  { id: "vintage-magazine", name: "Vintage Magazine", category: "marketing", description: "Premium long-form magazine essay — serif headings, sans body, ornament dividers" },
+  { id: "product-landing", name: "Product Landing", category: "marketing", description: "Modern SaaS one-pager — nav / hero / features / pricing / CTA / footer" },
+  { id: "handwritten-notes", name: "Meeting Notes", category: "doc", description: "Polished internal meeting doc — Charter headings, avatar initials, action-item table" },
+  { id: "card-summary", name: "Twitter / X Card", category: "marketing", description: "Pixel-accurate X/Twitter post card — black card on radial-gradient bg, blue verified mark" },
+  { id: "cyberpunk-neon", name: "Cyberpunk Terminal", category: "special", description: "Dark CRT terminal deck — mint phosphor headlines, scanlines, macOS chrome, $ prompts" },
+  { id: "brutalist", name: "Brutalist", category: "marketing", description: "Swiss industrial brutalism — Archivo Black, viewport-scale numbers, hazard red accent" }
+];
+
+const gallery = document.getElementById('gallery');
+gallery.innerHTML = STYLES.map(s => `
+  <a class="style-card" href="https://github.com/SHUJILAI/html-anything#-styles" target="_blank" rel="noopener">
+    <div class="style-thumb"><div class="thumb thumb-${s.id}"></div></div>
+    <div class="style-meta">
+      <div class="style-name">${s.name}</div>
+      <div class="style-desc">${s.description}</div>
+      <div class="style-cat">${s.category}</div>
+    </div>
+  </a>
+`).join('');
+</script>
+
+</body>
+</html>

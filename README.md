@@ -3,12 +3,9 @@
 > Turn any text or intent into a beautifully designed HTML page — 15 hand-crafted style packs, one click. **Built for Happycapy.ai.**
 
 **Repo:** https://github.com/SHUJILAI/html-anything
+**Website:** https://shujilai.github.io/html-anything/ — landing page with style gallery + one-click deploy
 
-**Live demo (web):** https://8080-capy-1775841235697-506885-preview.happycapy.ai
-**Default access token:** `demo-token-1234` (click 🔑 Token in the top-right and paste)
-**Admin dashboard:** https://8080-capy-1775841235697-506885-preview.happycapy.ai/admin
-
-> The live demo above runs in a sandboxed preview environment. To get your own permanent URL, deploy with one click below.
+> GitHub Pages can only host static files, so the landing page above is the public website. To actually generate HTML, deploy your own server instance with one click below (you bring your AI Gateway key, the server keeps it server-side).
 
 ---
 
