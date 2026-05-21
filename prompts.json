@@ -1,0 +1,157 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-05-21T06:46:49.859Z",
+  "description": "15 HTML style prompts. Each prompt is a self-contained user prompt that locks visual identity (typography + palette + layout sequence) so the same prompt produces visually consistent HTML across runs. Inject user content at {{CONTENT}}.",
+  "styles": [
+    {
+      "id": "notion-linear",
+      "name": "Notion / Linear",
+      "title": "Notion / Linear",
+      "summary": "Three-column docs page with sidebar nav, light callouts, and a sticky TOC.",
+      "category": "doc",
+      "accent": "#c96442",
+      "bg": "#fafaf9",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Notion / Linear documentation** style.\n\nVIBE: Clean modern docs page — warm off-white canvas, left sidebar nav, center article, sticky right TOC.\n\nLAYOUT (in this exact order):\n1. Topbar 50px tall, white bg, 1px bottom border (--border), brand on left + search input right.\n2. Three-column grid: 240px sidebar | 1fr article (max 720px) | 220px right TOC.\n3. Sidebar group labels in 11px monospace uppercase muted; one active link uses accent background + white text.\n4. Article: h1 36px, h2 22px, body 15–16px line-height 1.6.\n5. One callout box with 3px left accent border, 8px radius, label \"Note\" in 11px uppercase accent.\n6. One light code block: bg #f4f4f2, 8px radius, ui-monospace 13px.\n7. Bottom pager: two outlined boxes (Previous / Next), flex space-between.\n\nTYPOGRAPHY: -apple-system, system-ui, \"Segoe UI\", sans-serif. Code: ui-monospace, \"JetBrains Mono\".\nPALETTE: --bg #fafaf9 --fg #1c1b1a --muted #6b6964 --border #e6e4e0 --accent #c96442 --code-bg #f4f4f2 --surface #ffffff.\nDON'T: no Google Fonts, no card shadows (borders only), no dark code blocks, no hero, no second accent.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "kami-parchment",
+      "name": "Kami Parchment",
+      "title": "Kami Parchment",
+      "summary": "Print-typeset document on warm parchment with a single ink-blue accent.",
+      "category": "doc",
+      "accent": "#1B365D",
+      "bg": "#f5f4ed",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Kami Parchment print document** style.\n\nVIBE: A document typeset for print — warm parchment paper, single-weight serif, ink-blue as the only accent.\n\nLAYOUT (in this exact order):\n1. Centered page max-width 720px, parchment background, 80px top/bottom padding.\n2. Header: small uppercase eyebrow (12px tracked 0.18em) above a 38px serif title, byline + date below in italic muted.\n3. Body in single column, paragraphs justified, no section dividers other than 1.5em vertical rhythm.\n4. One pull-quote: italic serif, 22px, 1px ink-blue left border, 18px left padding.\n5. One stat row: three columns, each shows a serif 32px number + 11px uppercase tracked label.\n6. Footer: thin 1px rule across, then small italic \"— end —\" centered.\n\nTYPOGRAPHY: Georgia, \"Times New Roman\", serif, single weight (400). Title 38px, body 17px line-height 1.7.\nPALETTE: --bg #f5f4ed --fg #1f1c19 --muted #6b6358 --rule #d8d2c1 --accent #1B365D.\nDON'T: no sans-serif anywhere, no shadows, no rounded corners >2px, no images, no second accent.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "swiss-international",
+      "name": "Swiss International",
+      "title": "Swiss International",
+      "summary": "Hyper-rational Bauhaus deck — strict 16-col grid, one saturated accent.",
+      "category": "deck",
+      "accent": "#002FA7",
+      "bg": "#fafaf8",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Swiss International / Bauhaus** style.\n\nVIBE: Hyper-rational document — strict grid, generous whitespace, one saturated accent against off-white.\n\nLAYOUT (in this exact order):\n1. Top eyebrow row: 11px monospace uppercase tracked 0.2em — three cells (project / section / page no.) divided by 1px rules.\n2. Massive headline aligned to a 16-column grid; headline spans 10 cols, sub-deck spans 4 cols on the right.\n3. Three-column body block: each column 14px sans line-height 1.55, 1px vertical rules between columns.\n4. One full-bleed colored band in the accent (#002FA7) with reversed-out white 28px sans claim centered.\n5. Footnote row at bottom: tiny 10px monospace, left-aligned, three numbered notes separated by \" · \".\n\nTYPOGRAPHY: Helvetica Neue, Inter, \"Helvetica\", Arial, sans-serif. Headline 88px tight (line-height 0.95), sub-deck 18px, body 14px.\nPALETTE: --bg #fafaf8 --fg #0a0a09 --rule #1a1a18 --accent #002FA7.\nDON'T: no serif, no shadows, no gradients, no decorative imagery, no rounded corners.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "eink-editorial",
+      "name": "E-ink Editorial",
+      "title": "E-ink Editorial",
+      "summary": "Quiet editorial site — italic serif accents in a hairline bento grid.",
+      "category": "doc",
+      "accent": "#1A1A19",
+      "bg": "#FBFBFA",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **E-ink Editorial** style.\n\nVIBE: Quiet editorial site — bone-white canvas, italic serif accents, hairline bento grid, paper-like.\n\nLAYOUT (in this exact order):\n1. Top header: small wordmark left, italic serif tagline right, 1px bottom rule.\n2. Hero block: 56px italic serif headline; sans-serif 16px deck below; both left-aligned.\n3. Bento grid 3×2: six cards with 1px borders, 24px padding, no shadows, no fills. Each card: 11px uppercase eyebrow, 22px serif title, 14px sans body.\n4. One full-width quote panel: 28px italic serif, centered, 1px hairline borders top + bottom.\n5. Footer: 11px sans, three columns of links separated by hairlines, copyright on the right.\n\nTYPOGRAPHY: \"Instrument Serif\", Georgia, serif for italic display; system-ui sans for body. Display 56px italic, deck 16px, body 14–15px line-height 1.6.\nPALETTE: --bg #FBFBFA --fg #1A1A19 --muted #6b6964 --rule #d9d6d0.\nDON'T: no shadows, no fills inside cards, no color other than the inherited fg, no rounded corners >4px.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "magazine-poster",
+      "name": "Magazine Poster",
+      "title": "Magazine Poster",
+      "summary": "Sunday-paper newsprint poster — oversized serif headline + 6-cell editorial grid.",
+      "category": "poster",
+      "accent": "#b85a3a",
+      "bg": "#f3eee2",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Sunday-paper Magazine Poster** style.\n\nVIBE: Full-page newsprint poster — oversized serif headline, 6-cell editorial grid, warm cream paper.\n\nLAYOUT (in this exact order):\n1. Top eyebrow strip: black bar with 11px uppercase tracked white text — issue / volume / date.\n2. Hero headline: 120px serif, tight (line-height 0.92), span full width; immediately under it a 18px italic deck.\n3. 6-cell grid (3 cols × 2 rows): each cell holds a 13px tracked uppercase tag, 24px serif title, 14px sans body, 1px top border (no full borders).\n4. One full-bleed image placeholder block in the accent #b85a3a with white 22px serif caption centered.\n5. Bottom: 1px black rule, then small 11px sans page number left + section name right.\n\nTYPOGRAPHY: \"Playfair Display\", Georgia, serif for headlines; Inter, system-ui, sans for body. Headline 120px, cell title 24px, body 14px line-height 1.5.\nPALETTE: --bg #f3eee2 --fg #1a1815 --muted #6e6757 --rule #1a1815 --accent #b85a3a.\nDON'T: no shadows, no rounded corners, no second accent, no centered body text.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "academic-paper",
+      "name": "Long-form Essay",
+      "title": "Long-form Essay",
+      "summary": "Engineering long-form — Georgia 18px serif, drop-cap, full-bleed stat figure.",
+      "category": "doc",
+      "accent": "#c96442",
+      "bg": "#fafaf9",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Engineering Long-form Essay** style.\n\nVIBE: Considered long-form — Georgia serif body, drop-cap opener, occasional full-bleed stat figure, accent blockquote.\n\nLAYOUT (in this exact order):\n1. Top: small uppercase tracked eyebrow (12px, --muted), 36px serif title, 16px italic byline + date.\n2. Lead paragraph: drop-cap (4em float-left, line-height 0.85, accent color, 4px right margin).\n3. Body in single column max-width 680px, 18px Georgia line-height 1.7, paragraphs separated by 1.2em.\n4. One full-bleed stat figure: 4 columns, each shows 56px serif number + 11px uppercase tracked label + 13px sans description.\n5. One blockquote: 22px italic serif, 3px left accent border, 18px left padding.\n6. Footer: thin 1px rule, then small \"Continued in next issue ·\" footer-line in italic muted.\n\nTYPOGRAPHY: Georgia, \"Times New Roman\", serif. Title 36px, body 18px line-height 1.7, captions 11px tracked 0.14em.\nPALETTE: --bg #fafaf9 --fg #1c1b1a --muted #6b6964 --rule #e6e4e0 --accent #c96442.\nDON'T: no sans-serif body, no card shadows, no decorative gradients, no second accent, no dark mode.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "terminal-code",
+      "name": "Terminal / Runbook",
+      "title": "Terminal / Runbook",
+      "summary": "Dark-mode ops runbook with severity-coded alerts and tokenized code blocks.",
+      "category": "special",
+      "accent": "#6ee7b7",
+      "bg": "#0c0e14",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Terminal / Ops Runbook** style.\n\nVIBE: Dark-mode ops runbook — mint-phosphor accents, severity-coded alerts, syntax-tokened code blocks.\n\nLAYOUT (in this exact order):\n1. Top bar: macOS-style traffic-light dots left + \"runbook.md\" filename center + \"$ ready\" status right; 1px bottom border (#1c2030).\n2. Hero: 32px monospace title with mint accent prefix \"▸\"; 14px muted deck below.\n3. Stat row: 4 cells, each \"label\" 11px uppercase muted + \"value\" 28px monospace mint.\n4. Two alert boxes stacked: one INFO (mint left border, mint label) and one WARN (amber #f5b14a left border + label).\n5. One code block: dark surface (#11141b), 8px radius, syntax-tokenized (keywords mint, strings amber, comments muted), 13px monospace, line-height 1.55.\n6. Bottom: numbered runbook step list (1., 2., 3.) — each step 14px monospace, mint number prefix.\n\nTYPOGRAPHY: ui-monospace, \"JetBrains Mono\", \"Fira Code\", monospace throughout. Title 32px, body 14px, code 13px.\nPALETTE: --bg #0c0e14 --surface #11141b --fg #d8dee9 --muted #6b7280 --border #1c2030 --accent #6ee7b7 --warn #f5b14a.\nDON'T: no serif, no light surfaces, no shadows >0 0 0 1px, no second non-warn color, no rounded corners >8px.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "keynote-modern",
+      "name": "Keynote Modern",
+      "title": "Keynote Modern",
+      "summary": "Apple Keynote vibe — light / dark / brand slides stacked with massive type.",
+      "category": "deck",
+      "accent": "#c96442",
+      "bg": "#fafaf7",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Apple Keynote Modern** style — vertically stacked slides.\n\nVIBE: Apple Keynote aesthetic — light / dark / brand slides stacked vertically with massive type and generous whitespace.\n\nLAYOUT (in this exact order — stack as 1280×720 slide cards, each full-width, separated by 24px gap):\n1. SLIDE 1 (light, --bg): 96px display title centered, 22px deck below, small \"01\" page no. bottom-right.\n2. SLIDE 2 (dark, #0e0e0d): three-column stat row — each column has 80px display number in white + 14px uppercase tracked label muted.\n3. SLIDE 3 (light): two-column bullet slide — left col 36px section heading, right col 5 bullet items at 20px line-height 1.5.\n4. SLIDE 4 (brand, --accent bg, white text): single 80px claim centered + 18px attribution below.\n5. SLIDE 5 (light): closing slide — 56px display \"Thank you.\" + small monospace contact line below.\n\nTYPOGRAPHY: -apple-system, \"SF Pro Display\", system-ui, sans-serif. Display 80–96px (line-height 1.05, weight 700, letter-spacing -0.02em). Body 18–22px line-height 1.5.\nPALETTE: --bg #fafaf7 --dark #0e0e0d --fg #1c1b1a --muted #6b6964 --accent #c96442 --on-accent #ffffff.\nDON'T: no shadows on slides (only 16px radius), no gradients, no decorative imagery, no second accent.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "minimal-pitch",
+      "name": "Minimal Pitch",
+      "title": "Minimal Pitch",
+      "summary": "Classic YC fundraising deck — gradient accents, traction bars, ghost section numbers.",
+      "category": "deck",
+      "accent": "#3b5bff",
+      "bg": "#ffffff",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **YC Minimal Pitch Deck** style.\n\nVIBE: Classic YC fundraising deck — white slides stacked vertically, gradient accent flourishes, traction bars, ghost section numbers.\n\nLAYOUT (in this exact order, each slide full-width 16:9 card with 64px padding, 32px gap between):\n1. COVER: huge ghost \"01\" in --ghost behind 64px sans title; 18px tagline + 14px contact line below.\n2. PROBLEM: split — left 36px headline + 16px paragraph; right one large stat (88px gradient accent number) + 12px caption.\n3. SOLUTION: single-column 32px headline + 3 numbered cards in a row (border 1px, 16px padding, accent number on left).\n4. TRACTION: 4 horizontal traction bars (label left, gradient-filled bar, value right). Bar height 12px, 6px radius.\n5. ASK: 56px \"We're raising $X\" + 16px usage breakdown bullet list (3 items).\n\nTYPOGRAPHY: Inter, -apple-system, system-ui, sans-serif. Display 56–88px (700, letter-spacing -0.02em), body 16px line-height 1.5.\nPALETTE: --bg #ffffff --fg #0a0a0a --muted #6b7280 --border #e5e7eb --accent #3b5bff --accent-2 #8b5cf6 --ghost #f1f3f8 (gradients use --accent → --accent-2).\nDON'T: no shadows, no images, no dark slides, no second non-gradient accent, no centered body text.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "vintage-magazine",
+      "name": "Vintage Magazine",
+      "title": "Vintage Magazine",
+      "summary": "Premium long-form magazine — serif headings, sans body, ornament dividers.",
+      "category": "marketing",
+      "accent": "#b8553a",
+      "bg": "#fafaf7",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Premium Vintage Magazine** style.\n\nVIBE: Premium long-form magazine essay — serif display headings, sans body, ornament dividers, generous gutter.\n\nLAYOUT (in this exact order):\n1. Top masthead: tiny 11px tracked uppercase \"ESSAY · ISSUE 04 · 2026\" centered, with 1px rules left + right.\n2. 64px serif title centered; 18px italic deck below.\n3. Author byline row: small avatar circle (32px, accent fill) + 13px sans name + 11px tracked uppercase role.\n4. Body in two-column flow (column-count: 2; column-gap 40px), 16px sans line-height 1.7, drop-cap on first paragraph (3em, accent).\n5. One ornament divider: centered diamond glyph \"◆\" 14px accent + 1px hairline rules on either side.\n6. One pull-quote: 26px italic serif, centered, 1px rules top + bottom, 32px vertical padding.\n7. Footer: 11px tracked uppercase \"Continued ·\" left + page number right, 1px top rule.\n\nTYPOGRAPHY: \"Playfair Display\", \"EB Garamond\", Georgia, serif for headings; Inter, system-ui, sans for body. Title 64px, pull-quote 26px italic, body 16px.\nPALETTE: --bg #fafaf7 --fg #1f1c19 --muted #6b6358 --rule #d8d2c1 --accent #b8553a.\nDON'T: no shadows, no rounded corners, no second accent, no decorative imagery.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "product-landing",
+      "name": "Product Landing",
+      "title": "Product Landing",
+      "summary": "Modern SaaS one-pager — nav / hero / features / pricing / CTA / footer.",
+      "category": "marketing",
+      "accent": "#c96442",
+      "bg": "#fafaf9",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Modern SaaS Product Landing** style.\n\nVIBE: Modern SaaS one-pager — warm off-white, terracotta accent, soft borders, no shadows.\n\nLAYOUT (in this exact order):\n1. Nav: 64px tall, brand left, 4 nav links center, \"Sign in\" + filled \"Get started\" button right; 1px bottom border.\n2. Hero: 56px display headline + 18px deck + two CTAs (filled accent + outlined); right side a card with 1px border showing a fake product UI (eyebrow + 3 list rows).\n3. Logo strip: 5 grayscale logo placeholders centered with thin top + bottom 1px rules.\n4. Features grid 3×1: each card has 1px border, 24px padding, 11px uppercase eyebrow, 20px title, 15px body, accent-tinted icon box (28px square).\n5. Pricing 3-tier: each card 1px border, 16px radius, 24px padding, plan name + price + 5 bullet items + outlined or filled CTA. Middle tier highlighted with 1px accent border + \"Popular\" pill.\n6. CTA band: full-bleed accent strip with white 32px claim + outlined-on-accent button.\n7. Footer: 4-column links + bottom 1px rule + 11px copyright.\n\nTYPOGRAPHY: Inter, -apple-system, system-ui, sans-serif. Display 56px (weight 700, letter-spacing -0.02em), body 15px line-height 1.6.\nPALETTE: --bg #fafaf9 --fg #1c1b1a --muted #6b6964 --border #e6e4e0 --accent #c96442 --surface #ffffff.\nDON'T: no card shadows, no gradients, no second accent, no dark sections except final CTA band.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "handwritten-notes",
+      "name": "Meeting Notes",
+      "title": "Meeting Notes",
+      "summary": "Internal meeting doc — Charter headings, avatar initials, action-item table.",
+      "category": "doc",
+      "accent": "#2c5fae",
+      "bg": "#fafaf8",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Internal Meeting Notes** style.\n\nVIBE: Polished internal meeting doc — Charter serif headings, avatar initials, action-item table, no clutter.\n\nLAYOUT (in this exact order):\n1. Header card with 1px border, 16px radius, 24px padding: 28px serif title + 13px muted \"Date · Duration · Owner\" line.\n2. Attendees row: 5 avatar circles (32px, --accent bg, white initials) + names below in 12px sans.\n3. Agenda section: h2 22px serif, then numbered list 1./2./3. (15px sans, line-height 1.6).\n4. Discussion section: h2 22px serif, three short paragraphs at 15px sans line-height 1.6.\n5. Action items table: 4 columns (Task / Owner / Due / Status), 13px sans, 1px row borders, status pills colored (green / amber / muted) for done / wip / blocked.\n6. Footer: small 11px italic \"Notes by [Name] · Last edited [Date]\".\n\nTYPOGRAPHY: Charter, Georgia, serif for headings; -apple-system, system-ui, sans for body. Title 28px, h2 22px, body 15px line-height 1.6.\nPALETTE: --bg #fafaf8 --fg #1c1b1a --muted #6b6964 --border #e6e4e0 --accent #2c5fae --green #2f9e6e --amber #d39c2a.\nDON'T: no shadows, no fake handwriting fonts, no decorative imagery, no second accent for non-status colors.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "card-summary",
+      "name": "Twitter / X Card",
+      "title": "Twitter / X Card",
+      "summary": "Pixel-accurate X post card on a black radial-gradient background.",
+      "category": "marketing",
+      "accent": "#1d9bf0",
+      "bg": "#050507",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Twitter / X Post Card** style.\n\nVIBE: Pixel-accurate X / Twitter post card centered on a dark radial-gradient background.\n\nLAYOUT (in this exact order):\n1. Full-viewport background: radial-gradient from #0f1218 center to #050507 edges.\n2. Centered card: max-width 600px, bg #16181c, 16px radius, 1px border #2f3336, 24px padding.\n3. Header row: 48px circular avatar (accent fill, white initials) + (display name 16px bold + verified blue checkmark 18px) + handle \"@user · 2h\" 14px muted.\n4. Body: 17px white text line-height 1.4, max 4–6 short paragraphs separated by single blank lines.\n5. Optional pull-quote line at 19px; otherwise omit.\n6. Engagement row: 4 icons (reply / retweet / like / view) with 13px muted counts, evenly spaced; 1px top border separator above.\n7. Footer below the card: 13px muted \"View on x.com\" link centered.\n\nTYPOGRAPHY: -apple-system, \"SF Pro Text\", system-ui, sans-serif. Body 17px line-height 1.4, name 16px bold, handle/counts 14px.\nPALETTE: --bg-outer-from #0f1218 --bg-outer-to #050507 --card #16181c --fg #e7e9ea --muted #71767b --border #2f3336 --accent #1d9bf0.\nDON'T: no shadows, no rounded corners >16px, no second accent, no decorative imagery beyond the avatar circle.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "cyberpunk-neon",
+      "name": "Cyberpunk Terminal",
+      "title": "Cyberpunk Terminal",
+      "summary": "Dark CRT terminal deck — mint phosphor, scanlines, macOS chrome, $ prompts.",
+      "category": "special",
+      "accent": "#7ed3a4",
+      "bg": "#0a0c10",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Cyberpunk Terminal Deck** style.\n\nVIBE: Dark CRT terminal deck — mint phosphor headlines, faint scanlines, macOS chrome, $ prompts.\n\nLAYOUT (in this exact order):\n1. Window chrome bar: 3 traffic-light dots left + window title \"deck.sh\" center + small monospace timestamp right; bg #11141b, 1px bottom border.\n2. Hero: $ prompt prefix mint, then 56px monospace title in mint phosphor (#7ed3a4) with subtle 0 0 12px glow; 14px muted deck below.\n3. Stat grid 4-cell: each cell — 11px uppercase tracked muted label + 36px monospace mint number with same glow.\n4. Three \"log entry\" rows: timestamp (11px muted) + level pill ([INFO]/[WARN] in mint or amber #f5b14a) + 14px monospace message line.\n5. One outlined \"diagram\" block: 1px mint border, 16px padding, ASCII art lines (────, ▶, ◆) describing flow at 13px monospace.\n6. Footer: blinking-cursor _ underscore + monospace 11px muted \"press any key to continue\".\n\nAdd a fixed scanline overlay: ::before with linear-gradient(transparent 0, transparent 2px, rgba(126,211,164,0.04) 3px), pointer-events:none, z-index 100.\n\nTYPOGRAPHY: ui-monospace, \"JetBrains Mono\", \"Fira Code\", monospace throughout. Title 56px, stat 36px, body 14px line-height 1.55.\nPALETTE: --bg #0a0c10 --surface #11141b --fg #d8dee9 --muted #6b7280 --border #1c2030 --accent #7ed3a4 --warn #f5b14a.\nDON'T: no serif, no light surfaces, no rounded corners >8px, no second accent (warn-amber is the only secondary), no decorative imagery.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    },
+    {
+      "id": "brutalist",
+      "name": "Brutalist",
+      "title": "Brutalist",
+      "summary": "Swiss industrial brutalism — Archivo Black, viewport-scale numbers, hazard red.",
+      "category": "marketing",
+      "accent": "#E61919",
+      "bg": "#F4F4F0",
+      "prompt": "Generate a complete self-contained <!DOCTYPE html>...</html> page in **Swiss Industrial Brutalist** style.\n\nVIBE: Industrial brutalism — Archivo Black, viewport-scale numbers, hazard red accent, thick black bars.\n\nLAYOUT (in this exact order):\n1. Top bar: 56px tall, solid black, white 12px monospace uppercase tracked text — issue / page no. / date — separated by \" // \".\n2. Hero: 22vw black uppercase headline (Archivo Black, line-height 0.9, letter-spacing -0.02em), spans full width.\n3. Sub-deck: 18px sans uppercase tracked 0.14em, 24px below headline.\n4. Stat slab row: 3 cells separated by 4px black vertical rules — each cell shows 12vw red (#E61919) uppercase number + 11px uppercase tracked label below.\n5. Body block: 2-column 14px sans line-height 1.5, all left-aligned, with thick 4px black top and bottom rules.\n6. CTA row: full-bleed red strip 80px tall with white 24px Archivo Black uppercase text \"READ THE FULL REPORT →\" centered.\n7. Footer: black bar, white 11px tracked uppercase, three cells separated by \" // \".\n\nTYPOGRAPHY: \"Archivo Black\", \"Inter Tight\", system-ui, sans-serif (700 weight default). Hero 22vw, stats 12vw, sub-deck 18px, body 14px.\nPALETTE: --bg #F4F4F0 --fg #0a0a09 --rule #0a0a09 --accent #E61919 --on-accent #ffffff.\nDON'T: no rounded corners, no shadows, no gradients, no serif, no images, no second accent.\n\nOutput only the HTML.\n\nCONTENT TO RENDER:\n{{CONTENT}}"
+    }
+  ]
+}

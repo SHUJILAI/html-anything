@@ -1,0 +1,88 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-05-21T07:23:48.299Z",
+  "description": "Thumbnail PNGs for the 15 styles in prompts.json. Each entry's id matches a style id in prompts.json. URLs resolve to the GitHub raw content of the images/ directory on the main branch.",
+  "source": {
+    "rendered_with": "anthropic/claude-sonnet-4.6",
+    "test_prompt": "The Quiet Rise of Slow Software (a 400-word English field report covering title/subtitle/5 KPIs/4 paragraphs/2 quotes/1 bullet list/1 image placeholder/1 CTA — chosen to fill every section of any layout).",
+    "viewport": "1280x800 @ 2x device-pixel-ratio",
+    "temperature": 0.2
+  },
+  "thumbnails": [
+    {
+      "id": "notion-linear",
+      "title": "Notion / Linear",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/notion-linear.png"
+    },
+    {
+      "id": "kami-parchment",
+      "title": "Kami Parchment",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/kami-parchment.png"
+    },
+    {
+      "id": "swiss-international",
+      "title": "Swiss International",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/swiss-international.png"
+    },
+    {
+      "id": "eink-editorial",
+      "title": "E-ink Editorial",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/eink-editorial.png"
+    },
+    {
+      "id": "magazine-poster",
+      "title": "Magazine Poster",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/magazine-poster.png"
+    },
+    {
+      "id": "academic-paper",
+      "title": "Long-form Essay",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/academic-paper.png"
+    },
+    {
+      "id": "terminal-code",
+      "title": "Terminal / Runbook",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/terminal-code.png"
+    },
+    {
+      "id": "keynote-modern",
+      "title": "Keynote Modern",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/keynote-modern.png"
+    },
+    {
+      "id": "minimal-pitch",
+      "title": "Minimal Pitch",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/minimal-pitch.png"
+    },
+    {
+      "id": "vintage-magazine",
+      "title": "Vintage Magazine",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/vintage-magazine.png"
+    },
+    {
+      "id": "product-landing",
+      "title": "Product Landing",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/product-landing.png"
+    },
+    {
+      "id": "handwritten-notes",
+      "title": "Meeting Notes",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/handwritten-notes.png"
+    },
+    {
+      "id": "card-summary",
+      "title": "Twitter / X Card",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/card-summary.png"
+    },
+    {
+      "id": "cyberpunk-neon",
+      "title": "Cyberpunk Terminal",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/cyberpunk-neon.png"
+    },
+    {
+      "id": "brutalist",
+      "title": "Brutalist",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/brutalist.png"
+    }
+  ]
+}
