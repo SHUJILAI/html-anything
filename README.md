@@ -1,7 +1,7 @@
 # HTML-Anything · Style Prompts & Thumbnails
 
 > **15 consistency-locked HTML style prompts + matching screenshot thumbnails.**
-> Drop-in data files (two JSONs) for any HTML-generation system. Each prompt is engineered so the same style produces visually-stable HTML across runs and across content.
+> A single drop-in JSON for any HTML-generation system. Each prompt is engineered so the same style produces visually-stable HTML across runs and across content.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](#license)
 ![Styles](https://img.shields.io/badge/styles-15-c96442)
@@ -13,12 +13,11 @@
 
 ```
 .
-├── prompts.json          # 15 style prompts with metadata
-├── thumbnails.json       # 15 style → screenshot URL mappings
+├── prompts.json          # 15 style prompts with metadata + thumbnail URLs
 └── images/               # 15 PNG screenshots (rendered samples, 1280×800 @2x)
 ```
 
-That's it — no server, no build step, no dependencies. Two JSONs and an image folder.
+That's it — no server, no build step, no dependencies. One JSON and an image folder.
 
 ---
 
@@ -40,8 +39,8 @@ That's it — no server, no build step, no dependencies. Two JSONs and an image 
                                             Rendered HTML
 ```
 
-1. Render the gallery from `thumbnails.json` — each card is one style with its preview image
-2. When user clicks a card, look up the same `id` in `prompts.json` and inject `prompt` into the user's textarea
+1. Render the gallery from `prompts.json` — each card uses the style's `img` URL as preview
+2. When user clicks a card, inject that style's `prompt` into the user's textarea
 3. User adds their own content / intent below it, hits Generate
 4. You send the combined prompt to your LLM, get back a self-contained HTML page
 
@@ -63,6 +62,7 @@ That's it — no server, no build step, no dependencies. Two JSONs and an image 
       "category": "doc",
       "accent": "#c96442",
       "bg": "#fafaf9",
+      "img": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/notion-linear.png",
       "prompt": "<long English prompt with VIBE / LAYOUT / TYPOGRAPHY / PALETTE / DON'T / ANCHOR HTML sections>"
     }
   ]
@@ -71,31 +71,15 @@ That's it — no server, no build step, no dependencies. Two JSONs and an image 
 
 | Field | Type | Purpose |
 |---|---|---|
-| `id` | string | Stable key, mirrors `thumbnails.json` and image filename |
+| `id` | string | Stable key, mirrors image filename |
 | `name` | string | Short display name |
 | `title` | string | Card heading |
 | `summary` | string | One-line description for the card |
 | `category` | string | `doc` / `deck` / `marketing` / `tech` / `poster` |
 | `accent` | hex | Brand accent for that style's card border / hover |
 | `bg` | hex | Card background tint |
+| `img` | URL | Thumbnail screenshot URL (PNG, 1280×800 @2x) |
 | `prompt` | string | The locked style prompt to inject into the composer |
-
-### `thumbnails.json`
-
-```json
-{
-  "version": "1.0",
-  "thumbnails": [
-    {
-      "id": "notion-linear",
-      "title": "Notion / Linear",
-      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/notion-linear.png"
-    }
-  ]
-}
-```
-
-`id` is the join key — every entry in `thumbnails.json` matches exactly one entry in `prompts.json`.
 
 ---
 
@@ -134,30 +118,29 @@ This means whether the user pastes a meeting note or a product launch, the *Noti
 | `magazine-poster` | Magazine Poster | poster |
 | `cyberpunk-neon` | Cyberpunk HUD | poster |
 
-All thumbnails were generated from the **same shared content prompt** ("State of AI-Native Product Design 2026" — title, KPIs, body, quotes, CTA), so visual differences across cards are purely the result of the style prompt.
+All thumbnails were generated from the **same shared content prompt**, so visual differences across cards are purely the result of the style prompt.
 
 ---
 
 ## Quick integration example
 
 ```js
-// 1. Fetch both JSONs
-const [prompts, thumbnails] = await Promise.all([
-  fetch('https://raw.githubusercontent.com/SHUJILAI/html-anything/main/prompts.json').then(r => r.json()),
-  fetch('https://raw.githubusercontent.com/SHUJILAI/html-anything/main/thumbnails.json').then(r => r.json()),
-]);
+// 1. Fetch the JSON
+const data = await fetch(
+  'https://raw.githubusercontent.com/SHUJILAI/html-anything/main/prompts.json'
+).then(r => r.json());
 
 // 2. Render gallery
-thumbnails.thumbnails.forEach(t => {
+data.styles.forEach(s => {
   const card = document.createElement('div');
-  card.innerHTML = `<img src="${t.url}" alt="${t.title}"><h4>${t.title}</h4>`;
-  card.onclick = () => fillComposer(t.id);
+  card.innerHTML = `<img src="${s.img}" alt="${s.title}"><h4>${s.title}</h4><p>${s.summary}</p>`;
+  card.onclick = () => fillComposer(s.id);
   gallery.appendChild(card);
 });
 
 // 3. On click, inject the matching prompt
 function fillComposer(id) {
-  const style = prompts.styles.find(s => s.id === id);
+  const style = data.styles.find(s => s.id === id);
   document.getElementById('composer').value = style.prompt;
 }
 ```
