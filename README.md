@@ -75,7 +75,7 @@ That's it — no server, no build step, no dependencies. One JSON and an image f
 | `name` | string | Short display name |
 | `title` | string | Card heading |
 | `summary` | string | One-line description for the card |
-| `category` | string | `doc` / `deck` / `marketing` / `tech` / `poster` |
+| `category` | string | `doc` / `deck` / `marketing` / `poster` / `special` |
 | `accent` | hex | Brand accent for that style's card border / hover |
 | `bg` | hex | Card background tint |
 | `img` | URL | Thumbnail screenshot URL (PNG, 1280×800 @2x) |
@@ -103,20 +103,20 @@ This means whether the user pastes a meeting note or a product launch, the *Noti
 | ID | Name | Category |
 |---|---|---|
 | `notion-linear` | Notion / Linear | doc |
-| `academic-paper` | Long-form Essay | doc |
-| `card-summary` | Card Summary | doc |
-| `handwritten-notes` | Meeting Notes | doc |
+| `kami-parchment` | Kami Parchment | doc |
 | `eink-editorial` | E-ink Editorial | doc |
-| `minimal-pitch` | Minimal Pitch | deck |
+| `academic-paper` | Long-form Essay | doc |
+| `handwritten-notes` | Meeting Notes | doc |
+| `swiss-international` | Swiss International | deck |
 | `keynote-modern` | Keynote Modern | deck |
-| `product-landing` | Product Landing | marketing |
+| `minimal-pitch` | Minimal Pitch | deck |
 | `vintage-magazine` | Vintage Magazine | marketing |
-| `kami-parchment` | Parchment Scroll | marketing |
-| `terminal-code` | Terminal / Code | tech |
-| `brutalist` | Neo-Brutalist | poster |
-| `swiss-international` | Swiss Grid | poster |
+| `product-landing` | Product Landing | marketing |
+| `card-summary` | Twitter / X Card | marketing |
+| `brutalist` | Brutalist | marketing |
 | `magazine-poster` | Magazine Poster | poster |
-| `cyberpunk-neon` | Cyberpunk HUD | poster |
+| `terminal-code` | Terminal / Runbook | special |
+| `cyberpunk-neon` | Cyberpunk Terminal | special |
 
 All thumbnails were generated from the **same shared content prompt**, so visual differences across cards are purely the result of the style prompt.
 
