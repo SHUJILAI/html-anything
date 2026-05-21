@@ -1,156 +1,175 @@
-# HTML-Anything
+# HTML-Anything · Style Prompts & Thumbnails
 
-> Turn any text or intent into a beautifully designed HTML page — 15 hand-crafted style packs, one click. **Built for Happycapy.ai.**
+> **15 consistency-locked HTML style prompts + matching screenshot thumbnails.**
+> Drop-in data files (two JSONs) for any HTML-generation system. Each prompt is engineered so the same style produces visually-stable HTML across runs and across content.
 
-**Repo:** https://github.com/SHUJILAI/html-anything
-**Website:** https://shujilai.github.io/html-anything/ — landing page with style gallery + one-click deploy
-
-> GitHub Pages can only host static files, so the landing page above is the public website. To actually generate HTML, deploy your own server instance with one click below (you bring your AI Gateway key, the server keeps it server-side).
-
----
-
-## What it does
-
-You write a loose intent or paste a draft, pick a style on the left, hit **Generate**, and get a complete self-contained HTML page in seconds. Two-stage LLM pipeline: a fast **Optimizer** (Haiku) structures your input, then a **Style** prompt (Sonnet) renders the visual design.
-
-15 styles cover docs, decks, posters, marketing posts, and experimental looks. See the [DELIVERY.md](./DELIVERY.md) for the full design rationale and per-style references.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](#license)
+![Styles](https://img.shields.io/badge/styles-15-c96442)
+![Format](https://img.shields.io/badge/format-JSON-1f6feb)
 
 ---
 
-## Deploy as a web app
+## What's in this repo
 
-### One-click on Render (recommended)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/SHUJILAI/html-anything)
-
-After deploy, set these env vars in the Render dashboard:
-- `AI_GATEWAY_BASE_URL` — your AI gateway endpoint
-- `AI_GATEWAY_API_KEY` — your gateway key
-- `ACCESS_TOKEN` is auto-generated; copy it from the dashboard
-
-### Fly.io
-```bash
-flyctl launch --copy-config --no-deploy
-flyctl secrets set \
-  AI_GATEWAY_BASE_URL=https://your-gateway.com \
-  AI_GATEWAY_API_KEY=sk-... \
-  ACCESS_TOKEN=$(openssl rand -hex 16)
-flyctl deploy
+```
+.
+├── prompts.json          # 15 style prompts with metadata
+├── thumbnails.json       # 15 style → screenshot URL mappings
+└── images/               # 15 PNG screenshots (rendered samples, 1280×800 @2x)
 ```
 
-### Docker (any host)
-```bash
-docker build -t html-anything .
-docker run -p 8080:8080 \
-  -e AI_GATEWAY_BASE_URL=https://your-gateway.com \
-  -e AI_GATEWAY_API_KEY=sk-... \
-  -e ACCESS_TOKEN=demo-token-1234 \
-  html-anything
-```
-
-### Run locally
-```bash
-npm install
-cp .env.example .env  # edit with your credentials
-node server.js        # http://localhost:8080
-```
+That's it — no server, no build step, no dependencies. Two JSONs and an image folder.
 
 ---
 
-## File structure
+## How it's meant to be used
 
 ```
-html-anything/
-├── server.js          # Express app — auth, rate-limit, /api/* routes, AI Gateway proxy
-├── styles.js          # 15 style prompts (the core asset)
-├── optimizer.js       # Intent → structured Markdown (Claude Haiku)
-├── lib.js             # Auth middleware + rate limiting + analytics
-├── public/
-│   ├── index.html     # Main UI (4-quadrant: topbar / sidebar / composer / preview)
-│   ├── app.js         # Frontend logic, token management, authedFetch wrapper
-│   ├── style.css      # Styling + 15 CSS-only thumbnail mockups
-│   ├── samples.js     # 5 example inputs
-│   └── admin.html     # Token-gated analytics dashboard
-├── data/events.jsonl  # Append-only event log (gitignored)
-├── shares/            # Shared HTML pages (gitignored)
-├── Dockerfile         # Universal container build
-├── render.yaml        # Render Blueprint
-├── fly.toml           # Fly.io config
-├── .env.example       # Credential template
-├── README.md          # This file
-└── DELIVERY.md        # Architecture + style design rationale
+┌─────────────────┐    user clicks      ┌──────────────────────┐
+│  Style gallery  │ ──── card ────────▶ │  Composer / TextArea │
+│  (thumbnails)   │   auto-fills        │  (prompt prefilled)  │
+└─────────────────┘                     └──────────────────────┘
+                                                  │
+                                                  ▼
+                                       ┌──────────────────────┐
+                                       │  Your LLM pipeline   │
+                                       │  (Claude / GPT / …)  │
+                                       └──────────────────────┘
+                                                  │
+                                                  ▼
+                                            Rendered HTML
 ```
+
+1. Render the gallery from `thumbnails.json` — each card is one style with its preview image
+2. When user clicks a card, look up the same `id` in `prompts.json` and inject `prompt` into the user's textarea
+3. User adds their own content / intent below it, hits Generate
+4. You send the combined prompt to your LLM, get back a self-contained HTML page
 
 ---
 
-## Environment variables
+## Data shape
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `AI_GATEWAY_BASE_URL` | Yes | — | OpenRouter-compatible gateway base URL |
-| `AI_GATEWAY_API_KEY` | Yes | — | Bearer key for gateway |
-| `ACCESS_TOKEN` | Recommended | — | If set, `/api/generate` and `/admin` require `x-ha-token` header. Leave unset to make the tool fully public (still rate-limited). |
-| `HA_MODEL` | No | `anthropic/claude-sonnet-4.6` | Model used for the visual-rendering stage |
-| `HA_OPTIMIZER_MODEL` | No | `anthropic/claude-haiku-4.5` | Model used for the structuring stage |
-| `MAX_CONTENT_CHARS` | No | `50000` | Hard cap on input length |
-| `PORT` | No | `8080` | HTTP port |
+### `prompts.json`
 
----
+```json
+{
+  "version": "1.0",
+  "styles": [
+    {
+      "id": "notion-linear",
+      "name": "Notion / Linear",
+      "title": "Notion / Linear",
+      "summary": "Three-column docs page with sidebar nav, light callouts, and a sticky TOC.",
+      "category": "doc",
+      "accent": "#c96442",
+      "bg": "#fafaf9",
+      "prompt": "<long English prompt with VIBE / LAYOUT / TYPOGRAPHY / PALETTE / DON'T / ANCHOR HTML sections>"
+    }
+  ]
+}
+```
 
-## API
-
-| Endpoint | Auth | Description |
+| Field | Type | Purpose |
 |---|---|---|
-| `GET /api/styles` | Public | List the 15 style descriptors (id, name, category, accent, description) |
-| `GET /api/styles/:id` | Token | Full style descriptor including the prompt |
-| `POST /api/generate` | Token + rate limit | Body `{styleId, content, rawMode?}` → returns `{html, optimizerLatencyMs, styleLatencyMs}` |
-| `POST /api/share` | Token | Body `{html}` → returns `{id, url}` for permanent share link |
-| `GET /s/:id` | Public | Serve a previously shared HTML page |
-| `GET /admin` | Token | Analytics dashboard (HTML) |
-| `GET /admin/stats.json` | Token | Aggregated analytics JSON |
-| `GET /admin/events.jsonl` | Token | Raw append-only event log |
+| `id` | string | Stable key, mirrors `thumbnails.json` and image filename |
+| `name` | string | Short display name |
+| `title` | string | Card heading |
+| `summary` | string | One-line description for the card |
+| `category` | string | `doc` / `deck` / `marketing` / `tech` / `poster` |
+| `accent` | hex | Brand accent for that style's card border / hover |
+| `bg` | hex | Card background tint |
+| `prompt` | string | The locked style prompt to inject into the composer |
 
-Rate limit: 12 generations per 60-second window per IP (in-memory sliding window).
+### `thumbnails.json`
+
+```json
+{
+  "version": "1.0",
+  "thumbnails": [
+    {
+      "id": "notion-linear",
+      "title": "Notion / Linear",
+      "url": "https://raw.githubusercontent.com/SHUJILAI/html-anything/main/images/notion-linear.png"
+    }
+  ]
+}
+```
+
+`id` is the join key — every entry in `thumbnails.json` matches exactly one entry in `prompts.json`.
 
 ---
 
-## Adding a new style
+## How "consistency-locked" works
 
-1. Append a new entry to `styles.js`:
-   ```js
-   {
-     id: "my-new-style",
-     name: "My New Style",
-     category: "doc",   // doc | deck | poster | marketing | special
-     accent: "#hexcolor",
-     bg: "#hexcolor",
-     description: "One-line tagline",
-     prompt: `Output a complete <!DOCTYPE html>...</html> in the **Style Name** style.
+Each prompt is structured to remove design-time ambiguity, so the LLM has minimal room to drift:
 
-   VIBE: ...
-   LAYOUT (must include): ...
-   TYPOGRAPHY: ...
-   PALETTE (use exactly these): ...
-   ABSOLUTELY DON'T: ...
-   ANCHOR — match this stylistic direction:
-   \`\`\`html
-   <... a 30-80 line few-shot HTML anchor ...>
-   \`\`\`
-   REQUIREMENTS:
-   - All CSS inline
-   - Output ONLY the HTML.`,
-   }
-   ```
-2. Add a CSS-only thumbnail mockup to `public/style.css`:
-   ```css
-   .thumb-my-new-style { background: #...; }
-   .thumb-my-new-style::before { content: "..."; ... }
-   ```
-3. Restart `node server.js` — the new style appears automatically.
+- **VIBE** — one-line intent
+- **LAYOUT** — exact section order, grid, whitespace ratio (frozen)
+- **TYPOGRAPHY** — font stack, size scale, line-height (frozen, hex-coded)
+- **PALETTE** — bg / fg / accent hex colors (frozen)
+- **DON'T** — explicit forbidden patterns (no JS, no external fonts, no animation, no responsive break unless specified)
+- **ANCHOR HTML** — a skeletal HTML block the LLM is instructed to fill, not redesign
 
-Prompt-writing checklist: VIBE, LAYOUT (≥5 specific items), PALETTE (with hex codes), TYPOGRAPHY (3 stacks), DON'T (≥3 anti-patterns), ANCHOR (~30–80 line HTML snippet for few-shot).
+This means whether the user pastes a meeting note or a product launch, the *Notion / Linear* card always renders a Notion-like layout — only the content changes.
+
+---
+
+## Style catalog (15)
+
+| ID | Name | Category |
+|---|---|---|
+| `notion-linear` | Notion / Linear | doc |
+| `academic-paper` | Long-form Essay | doc |
+| `card-summary` | Card Summary | doc |
+| `handwritten-notes` | Meeting Notes | doc |
+| `eink-editorial` | E-ink Editorial | doc |
+| `minimal-pitch` | Minimal Pitch | deck |
+| `keynote-modern` | Keynote Modern | deck |
+| `product-landing` | Product Landing | marketing |
+| `vintage-magazine` | Vintage Magazine | marketing |
+| `kami-parchment` | Parchment Scroll | marketing |
+| `terminal-code` | Terminal / Code | tech |
+| `brutalist` | Neo-Brutalist | poster |
+| `swiss-international` | Swiss Grid | poster |
+| `magazine-poster` | Magazine Poster | poster |
+| `cyberpunk-neon` | Cyberpunk HUD | poster |
+
+All thumbnails were generated from the **same shared content prompt** ("State of AI-Native Product Design 2026" — title, KPIs, body, quotes, CTA), so visual differences across cards are purely the result of the style prompt.
+
+---
+
+## Quick integration example
+
+```js
+// 1. Fetch both JSONs
+const [prompts, thumbnails] = await Promise.all([
+  fetch('https://raw.githubusercontent.com/SHUJILAI/html-anything/main/prompts.json').then(r => r.json()),
+  fetch('https://raw.githubusercontent.com/SHUJILAI/html-anything/main/thumbnails.json').then(r => r.json()),
+]);
+
+// 2. Render gallery
+thumbnails.thumbnails.forEach(t => {
+  const card = document.createElement('div');
+  card.innerHTML = `<img src="${t.url}" alt="${t.title}"><h4>${t.title}</h4>`;
+  card.onclick = () => fillComposer(t.id);
+  gallery.appendChild(card);
+});
+
+// 3. On click, inject the matching prompt
+function fillComposer(id) {
+  const style = prompts.styles.find(s => s.id === id);
+  document.getElementById('composer').value = style.prompt;
+}
+```
 
 ---
 
 ## License
 
-MIT — for delivery to upstream / boss usage.
+MIT — use the prompts and screenshots in any project, commercial or otherwise.
+
+---
+
+## Credits
+
+Designed for [Happycapy.ai](https://happycapy.ai). Prompts and screenshot rendering by Capy + Claude.
