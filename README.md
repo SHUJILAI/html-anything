@@ -63,7 +63,8 @@ That's it — no server, no build step, no dependencies. One JSON and an image f
       "accent": "#c96442",
       "bg": "#fafaf9",
       "img": "https://storage.res-capy.com/html-anything/notion-linear.webp",
-      "prompt": "<long English prompt with VIBE / LAYOUT / TYPOGRAPHY / PALETTE / DON'T / ANCHOR HTML sections>"
+      "prompt": "<long English prompt with VIBE / LAYOUT / TYPOGRAPHY / PALETTE / DON'T / ANCHOR HTML sections>",
+      "share": "https://happycapy.ai/s/<id>"
     }
   ]
 }
@@ -80,6 +81,7 @@ That's it — no server, no build step, no dependencies. One JSON and an image f
 | `bg` | hex | Card background tint |
 | `img` | URL | Thumbnail screenshot URL (WebP on `storage.res-capy.com`, ~1280×800) |
 | `prompt` | string | The locked style prompt to inject into the composer |
+| `share` | URL | Live demo of this style rendered against the shared corpus (Capy share link). Empty if not yet recorded. |
 
 ---
 
